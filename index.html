@@ -610,10 +610,6 @@ body {
   animation: none !important;
 }
 
-.result-capture.is-capturing {
-  padding-bottom: 100px;
-}
-
 .result-capture.is-capturing .score-bar-fill,
 .result-capture.is-capturing .dir-bar-fill {
   transition: none !important;
@@ -1995,7 +1991,7 @@ createApp({
       this.previewImageUrl = '';
 
       this.$nextTick(function() {
-        el.classList.add('is-capturing', 'scores-revealed');
+        el.classList.add('scores-revealed');
 
         var doCapture = function() {
           return html2canvas(el, {
@@ -2048,7 +2044,7 @@ createApp({
               console.error(err);
               alert('生成图片失败，请确认通过网页服务器访问（非直接打开文件）后重试');
             }).finally(function() {
-              el.classList.remove('is-capturing');
+              el.classList.remove('scores-revealed');
               self.savingImage = false;
             });
           });
