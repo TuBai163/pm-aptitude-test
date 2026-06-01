@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>测测你有多适合当产品经理（2026版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* 未挂载 Vue 前隐藏模板，避免露出 {{ }} 和无法点击的弹窗 */
+[v-cloak] { display: none !important; }
+/* ========== CSS Reset & Variables ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --c-primary: #4F46E5;
+  --c-primary-light: #EEF2FF;
+  --c-primary-dark: #4338CA;
+  --c-success: #10B981;
+  --c-success-light: #D1FAE5;
+  --c-warning: #F59E0B;
+  --c-warning-light: #FEF3C7;
+  --c-danger: #EF4444;
+  --c-danger-light: #FEE2E2;
+  --c-bg: #F8F9FB;
+  --c-card: #FFFFFF;
+  --c-text: #111827;
+  --c-text-secondary: #6B7280;
+  --c-text-light: #9CA3AF;
+  --c-border: #E5E7EB;
+  --c-border-hairline: #F3F4F6;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-slide: cubic-bezier(0.32, 0.72, 0, 1);
+  --slide-duration: 0.42s;
+}
+
+html { font-size: 16px; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--c-bg);
+  color: var(--c-text);
+  line-height: 1.6;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ========== Utility ========== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* ========== Nav Bar ========== */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 52px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--c-border-hairline);
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--c-text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 4px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  transition: color 0.15s;
+  font-family: var(--font-sans);
+}
+.nav-back:hover { color: var(--c-text); }
+.nav-back:disabled { opacity: 0.3; cursor: default; }
+
+.nav-back svg { width: 16px; height: 16px; }
+
+.nav-next {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.nav-progress-text {
+  font-size: 13px;
+  color: var(--c-text-secondary);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== Progress Bar ========== */
+.progress-bar-wrap {
+  height: 3px;
+  background: var(--c-border);
+  transition: opacity 0.3s;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--c-primary);
+  transition: width 0.4s var(--ease-out);
+  border-radius: 0 2px 2px 0;
+}
+.progress-bar-fill.complete { background: var(--c-success); }
+
+/* ========== Page Content ========== */
+.page-content {
+  flex: 1;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== Welcome Page ========== */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 8px;
+  animation: fadeInUp 0.6s var(--ease-out);
+}
+
+.welcome-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--c-primary-light);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.welcome-icon svg { width: 36px; height: 36px; color: var(--c-primary); }
+
+.welcome h1 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.welcome-sub {
+  font-size: 14px;
+  color: var(--c-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+  max-width: 340px;
+}
+
+.welcome-hint {
+  font-size: 11px;
+  color: var(--c-text-light);
+  line-height: 1.5;
+  margin-bottom: 28px;
+  max-width: 340px;
+}
+
+.welcome-info {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.welcome-info-item { text-align: center; }
+.welcome-info-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+}
+.welcome-info-label { font-size: 11px; color: var(--c-text-light); margin-top: 2px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  font-family: var(--font-sans);
+  min-height: 48px;
+  letter-spacing: 0.01em;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--c-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(79,70,229,0.3);
+}
+.btn-primary:hover { background: var(--c-primary-dark); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--c-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  min-height: 40px;
+}
+.btn-ghost:hover { color: var(--c-text); background: var(--c-border-hairline); }
+
+.btn-secondary {
+  background: var(--c-border);
+  color: var(--c-text);
+}
+.btn-secondary:hover { background: #D1D5DB; }
+
+/* ========== Continue Modal ========== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.modal {
+  background: var(--c-card);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.25s var(--ease-out);
+}
+
+.modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.modal p { font-size: 14px; color: var(--c-text-secondary); margin-bottom: 20px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+.modal-actions .btn { flex: 1; padding: 12px 20px; font-size: 14px; min-height: 44px; }
+
+/* ========== Question Page ========== */
+.page-content--quiz {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.question-stage {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  width: 100%;
+  min-height: min(68vh, 640px);
+  touch-action: pan-y;
+}
+
+.question-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+.question-type-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.tag-scenario { background: #EDE9FE; color: #5B21B6; }
+.tag-preference { background: #DBEAFE; color: #1D4ED8; }
+.tag-tech { background: #D1FAE5; color: #059669; }
+.tag-social { background: #FEF3C7; color: #B45309; }
+
+.question-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  letter-spacing: 0.002em;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--c-card);
+  border: 2px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-text);
+  transition: all 0.15s var(--ease-out);
+  font-family: var(--font-sans);
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option-btn:active { transform: scale(0.98); }
+.option-btn:hover:not(.option-selected):not(:disabled) {
+  border-color: #C7D2FE;
+  background: #F5F7FF;
+}
+.option-btn:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+.option-selected {
+  border-color: var(--c-primary);
+  background: var(--c-primary-light);
+  box-shadow: 0 0 0 1px var(--c-primary);
+}
+
+.option-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: var(--c-bg);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-text-secondary);
+  transition: all 0.15s;
+}
+.option-selected .option-letter {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.option-text { flex: 1; padding-top: 3px; }
+
+/* ========== Slide Transitions（前进：旧题左出、新题从右入）========== */
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  transition: transform var(--slide-duration) var(--ease-slide);
+  will-change: transform;
+}
+
+.slide-left-leave-active,
+.slide-right-leave-active {
+  z-index: 1;
+}
+
+.slide-left-enter-active,
+.slide-right-enter-active {
+  z-index: 2;
+}
+
+/* 下一题：整体向左滑 */
+.slide-left-enter-from {
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter-to {
+  transform: translate3d(0, 0, 0);
+}
+.slide-left-leave-from {
+  transform: translate3d(0, 0, 0);
+}
+.slide-left-leave-to {
+  transform: translate3d(-100%, 0, 0);
+}
+
+/* 上一题：整体向右滑 */
+.slide-right-enter-from {
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-enter-to {
+  transform: translate3d(0, 0, 0);
+}
+.slide-right-leave-from {
+  transform: translate3d(0, 0, 0);
+}
+.slide-right-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+
+/* ========== Fade Transitions ========== */
+.fade-enter-active { transition: opacity 0.4s var(--ease-out); }
+.fade-leave-active { transition: opacity 0.2s var(--ease-out); }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* ========== Result Page ========== */
+.result-wrap {
+  animation: fadeInUp 0.55s var(--ease-out);
+  padding-top: max(12px, env(safe-area-inset-top, 0px));
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(ellipse 130% 55% at 50% -8%, rgba(79, 70, 229, 0.14), transparent 58%),
+    radial-gradient(ellipse 70% 35% at 100% 12%, rgba(16, 185, 129, 0.07), transparent 50%),
+    var(--c-bg);
+}
+
+.result-capture {
+  background: transparent;
+}
+
+/* Hero */
+.result-hero {
+  position: relative;
+  text-align: center;
+  padding: 28px 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f7ff 48%, #f0fdf9 100%);
+  border: 1px solid rgba(79, 70, 229, 0.08);
+  box-shadow: 0 12px 40px rgba(79, 70, 229, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  overflow: hidden;
+}
+
+.result-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.12), transparent 42%);
+  pointer-events: none;
+}
+
+.result-hero-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-primary);
+  background: var(--c-primary-light);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.result-hero h2 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.result-hero-sub {
+  font-size: 14px;
+  color: var(--c-text-secondary);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.result-hero-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1);
+  position: relative;
+}
+
+.result-hero-highlight-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #059669;
+  letter-spacing: 0.04em;
+}
+
+.result-hero-highlight-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-text);
+  max-width: 200px;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.result-hero-highlight-pct {
+  font-family: 'Plus Jakarta Sans', var(--font-sans);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--c-success);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Section blocks */
+.result-block {
+  background: var(--c-card);
+  border-radius: 18px;
+  padding: 20px 18px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(17, 24, 39, 0.05);
+  box-shadow: 0 4px 24px rgba(17, 24, 39, 0.04);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--c-text-secondary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--c-primary), #818cf8);
+  flex-shrink: 0;
+}
+
+/* Radar */
+.radar-container {
+  padding: 8px 4px 4px;
+  margin-bottom: 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.radar-container canvas {
+  max-height: 300px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Dimension scores */
+.scores-section { padding-bottom: 18px; }
+
+.score-list { display: flex; flex-direction: column; gap: 14px; }
+
+.score-row {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: scoreReveal 0.55s var(--ease-out) forwards;
+}
+
+.result-capture.scores-revealed .score-row,
+.result-capture.is-capturing .score-row {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: none !important;
+}
+
+.result-capture.is-capturing .score-bar-fill,
+.result-capture.is-capturing .dir-bar-fill {
+  transition: none !important;
+}
+
+.score-row-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.score-dim-tag {
+  font-family: 'Plus Jakarta Sans', var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--c-primary);
+  background: var(--c-primary-light);
+  padding: 3px 7px;
+  border-radius: 6px;
+  min-width: 52px;
+  text-align: center;
+}
+
+.score-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-text);
+  min-width: 0;
+}
+
+.score-value-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.score-value {
+  font-family: 'Plus Jakarta Sans', var(--font-sans);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.score-value.is-top { color: #b45309; }
+
+.score-top-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #b45309;
+  background: var(--c-warning-light);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.score-bar-bg {
+  height: 10px;
+  background: #eef0f4;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1s var(--ease-out);
+}
+
+.score-bar-fill.primary {
+  background: linear-gradient(90deg, #6366f1, var(--c-primary));
+}
+
+.score-bar-fill.gold {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+/* Direction */
+.direction-section { background: transparent; border: none; box-shadow: none; padding: 0; }
+
+.direction-list { display: flex; flex-direction: column; gap: 10px; }
+
+.direction-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 14px 16px;
+  background: var(--c-card);
+  border-radius: 16px;
+  border: 1px solid rgba(17, 24, 39, 0.05);
+  box-shadow: 0 2px 12px rgba(17, 24, 39, 0.04);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+
+.direction-card.top-match {
+  grid-template-columns: auto 1fr auto;
+  padding: 18px 18px 16px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 55%);
+  box-shadow: 0 8px 28px rgba(16, 185, 129, 0.12);
+}
+
+.dir-rank {
+  grid-row: 1 / 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', var(--font-sans);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.dir-rank.top {
+  background: linear-gradient(135deg, #34d399, var(--c-success));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.dir-rank.normal {
+  background: #f3f4f6;
+  color: var(--c-text-secondary);
+}
+
+.dir-meta { min-width: 0; }
+
+.dir-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.direction-card.top-match .dir-name {
+  font-size: 15px;
+}
+
+.dir-bar-wrap {
+  height: 8px;
+  background: #eef0f4;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dir-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1s var(--ease-out);
+}
+
+.dir-bar-fill.top { background: linear-gradient(90deg, #34d399, var(--c-success)); }
+.dir-bar-fill.high { background: linear-gradient(90deg, #818cf8, var(--c-primary)); }
+.dir-bar-fill.mid { background: linear-gradient(90deg, #fcd34d, var(--c-warning)); }
+.dir-bar-fill.low { background: linear-gradient(90deg, #fca5a5, var(--c-danger)); }
+
+.dir-pct-col {
+  text-align: right;
+  grid-row: 1 / 3;
+  align-self: center;
+}
+
+.dir-pct {
+  font-family: 'Plus Jakarta Sans', var(--font-sans);
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+  line-height: 1;
+}
+
+.direction-card.top-match .dir-pct {
+  font-size: 26px;
+  color: var(--c-success);
+}
+
+.dir-badge {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.dir-badge.best {
+  background: var(--c-success-light);
+  color: #047857;
+}
+
+/* Insights */
+.insight-card {
+  display: flex;
+  gap: 14px;
+  padding: 18px 16px;
+  margin-bottom: 12px;
+  background: var(--c-card);
+  border-radius: 16px;
+  border: 1px solid rgba(17, 24, 39, 0.05);
+  box-shadow: 0 2px 16px rgba(17, 24, 39, 0.04);
+}
+
+.insight-card:last-of-type { margin-bottom: 0; }
+
+.insight-card-accent {
+  width: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.insight-card--match .insight-card-accent { background: linear-gradient(180deg, var(--c-primary), #818cf8); }
+.insight-card--warn .insight-card-accent { background: linear-gradient(180deg, var(--c-warning), #fbbf24); }
+.insight-card--tip .insight-card-accent { background: linear-gradient(180deg, var(--c-success), #34d399); }
+
+.insight-card-body { min-width: 0; flex: 1; }
+
+.insight-card-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.insight-card--match .insight-card-tag { color: var(--c-primary); }
+.insight-card--warn .insight-card-tag { color: #b45309; }
+.insight-card--tip .insight-card-tag { color: #059669; }
+
+.insight-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+  margin-bottom: 8px;
+  color: var(--c-text);
+}
+
+.insight-card p {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--c-text-secondary);
+}
+
+.insights-section { margin-bottom: 16px; }
+
+/* Quote */
+.heuristic-footer {
+  margin: 20px 0 8px;
+  padding: 22px 20px;
+  text-align: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.06), rgba(16, 185, 129, 0.05));
+  border: 1px dashed rgba(79, 70, 229, 0.15);
+  position: relative;
+}
+
+.heuristic-footer::before {
+  content: '\201C';
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  font-size: 36px;
+  line-height: 1;
+  color: rgba(79, 70, 229, 0.2);
+  font-family: Georgia, serif;
+}
+
+.heuristic-footer p {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--c-text);
+  line-height: 1.85;
+  position: relative;
+}
+
+/* Disclaimer */
+.disclaimer {
+  margin-top: 32px;
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: var(--radius-sm);
+}
+.disclaimer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text-secondary);
+  margin-bottom: 8px;
+}
+.disclaimer ol {
+  padding-left: 18px;
+  font-size: 11.5px;
+  color: var(--c-text-light);
+  line-height: 1.7;
+}
+.disclaimer ol li { margin-bottom: 3px; }
+
+/* ========== Result actions & save modal ========== */
+.result-actions-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  margin: 0 -4px;
+  padding: 16px 4px max(12px, env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--c-bg) 55%, rgba(248, 249, 251, 0.92) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.result-actions .btn {
+  flex: 1;
+  min-height: 50px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
+.result-actions .btn-primary {
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.28);
+}
+
+.btn-outline-primary {
+  background: var(--c-card);
+  color: var(--c-primary);
+  border: 2px solid var(--c-primary);
+  box-shadow: none;
+}
+.btn-outline-primary:hover:not(:disabled) {
+  background: var(--c-primary-light);
+}
+.btn-outline-primary:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.result-capture {
+  background: var(--c-bg);
+}
+
+.modal-save {
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 18px 18px;
+}
+
+.modal-save h2 {
+  font-size: 17px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.save-preview-wrap {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  margin-bottom: 16px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.save-preview-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.modal-save .modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-save .modal-actions .btn {
+  flex: 1;
+  min-height: 44px;
+  font-size: 14px;
+}
+
+/* ========== Keyframe Animations ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes scoreReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 374px) {
+  .question-text { font-size: 15px; }
+  .option-btn { padding: 12px 14px; font-size: 13px; }
+  .score-label { width: 62px; min-width: 62px; font-size: 12px; }
+}
+
+@media (min-width: 520px) {
+  .page-content { padding: 24px 0 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .slide-left-enter-from,
+  .slide-left-leave-to,
+  .slide-right-enter-from,
+  .slide-right-leave-to {
+    transform: none !important;
+  }
+}
+
+/* ========== Orientation ========== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .question-text { max-height: 25vh; font-size: 14px; }
+  .options-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .option-btn { flex: 1 1 calc(50% - 4px); min-width: 0; font-size: 13px; padding: 10px 12px; }
+  .option-letter { width: 24px; height: 24px; font-size: 11px; }
+  .nav-bar { height: 44px; }
+}
+</style>
+</head>
+<body>
+<div id="page-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#F8F9FB;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;color:#6B7280;font-size:15px;z-index:9999;">正在加载测评…</div>
+<div id="app" v-cloak>
+  <template v-if="appState === 'welcome'">
+    <!-- ========== WELCOME PAGE ========== -->
+    <div class="nav-bar" style="justify-content:center;border-bottom:none;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;">
+      <span style="font-size:13px;font-weight:600;color:var(--c-text-secondary);">产品经理适配度测评 2026</span>
+    </div>
+    <div class="page-content">
+      <div class="welcome">
+        <div class="welcome-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+        </div>
+        <h1>测测你有多适合<br>当产品经理</h1>
+        <p class="welcome-sub">不是二分法的「是/否」，而是揭示你的能力光谱与方向适配度。</p>
+        <p class="welcome-hint">基于2026年产品经理核心能力调研</p>
+        <div class="welcome-info">
+          <div class="welcome-info-item"><div class="welcome-info-num">40</div><div class="welcome-info-label">道情景题</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">~10</div><div class="welcome-info-label">分钟完成</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">7维</div><div class="welcome-info-label">能力评估</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">5向</div><div class="welcome-info-label">方向适配</div></div>
+        </div>
+        <button class="btn btn-primary" @click="startTest" style="width:100%;max-width:280px;">
+          开始测评
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <template v-else-if="appState === 'quiz'">
+    <!-- ========== QUIZ PAGE ========== -->
+    <div class="nav-bar">
+      <button class="nav-back" @click="prevQuestion" :disabled="currentQ === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        上一题
+      </button>
+      <span class="nav-progress-text">{{ currentQ + 1 }} / {{ questions.length }}</span>
+      <button class="nav-back nav-next" @click="nextQuestion" :disabled="selectedAnswers[currentQuestion.id] == null || currentQ >= questions.length - 1">
+        下一题
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" :style="{ width: progressPct + '%' }" :class="{ complete: progressPct === 100 }"></div>
+    </div>
+    <div class="page-content page-content--quiz">
+      <div class="question-stage">
+      <transition :name="slideDirection">
+        <div class="question-wrap" :key="currentQuestion.id">
+          <span class="question-type-tag" :class="'tag-' + currentQuestion.category">
+            {{ categoryLabels[currentQuestion.category] }}
+          </span>
+          <div class="question-text">{{ currentQuestion.text }}</div>
+          <div class="options-list">
+            <button
+              v-for="(opt, idx) in currentQuestion.options"
+              :key="idx"
+              class="option-btn"
+              :class="{ 'option-selected': selectedAnswers[currentQuestion.id] === opt.letter }"
+              :disabled="optionLocked"
+              @click="selectOption(opt.letter)"
+              :aria-pressed="selectedAnswers[currentQuestion.id] === opt.letter"
+            >
+              <span class="option-letter">{{ opt.letter }}</span>
+              <span class="option-text">{{ opt.text }}</span>
+            </button>
+          </div>
+        </div>
+      </transition>
+      </div>
+    </div>
+  </template>
+
+  <template v-else-if="appState === 'result'">
+    <!-- ========== RESULT PAGE ========== -->
+    <div class="page-content result-wrap">
+      <div ref="resultCapture" class="result-capture">
+      <header class="result-hero">
+        <span class="result-hero-badge">2026 · PM 测评</span>
+        <h2>测评完成</h2>
+        <p class="result-hero-sub">你的产品经理能力画像</p>
+        <div class="result-hero-highlight" v-if="directionResults[0]">
+          <span class="result-hero-highlight-label">最佳适配</span>
+          <span class="result-hero-highlight-name">{{ directionResults[0].label }}</span>
+          <span class="result-hero-highlight-pct">{{ directionResults[0].pct }}%</span>
+        </div>
+      </header>
+
+      <section class="result-block">
+        <h3 class="section-title">能力雷达</h3>
+        <div class="radar-container">
+          <canvas ref="radarCanvas" :width="radarSize" :height="radarSize"></canvas>
+        </div>
+      </section>
+
+      <section class="result-block scores-section">
+        <h3 class="section-title">能力维度</h3>
+        <div class="score-list">
+          <div
+            v-for="(dim, idx) in dimensionScoresDisplay"
+            :key="dim.key"
+            class="score-row"
+            :style="{ animationDelay: (280 + idx * 90) + 'ms' }"
+          >
+            <div class="score-row-head">
+              <span class="score-dim-tag">{{ dim.key }}</span>
+              <span class="score-label">{{ dim.label }}</span>
+              <span class="score-value-wrap">
+                <span class="score-value" :class="{ 'is-top': dim.isTop }">{{ dim.score }}</span>
+                <span class="score-top-badge" v-if="dim.isTop">最高</span>
+              </span>
+            </div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" :class="dim.isTop ? 'gold' : 'primary'" :style="{ width: dim.score + '%' }"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="direction-section">
+        <h3 class="section-title">方向适配度</h3>
+        <div class="direction-list">
+          <div
+            v-for="(dir, idx) in directionResults"
+            :key="dir.key"
+            class="direction-card"
+            :class="{ 'top-match': idx === 0 }"
+          >
+            <div class="dir-rank" :class="idx === 0 ? 'top' : 'normal'">{{ idx + 1 }}</div>
+            <div class="dir-meta">
+              <span class="dir-name">{{ dir.label }}</span>
+              <div class="dir-bar-wrap">
+                <div class="dir-bar-fill" :class="dir.barClass" :style="{ width: dir.pct + '%' }"></div>
+              </div>
+            </div>
+            <div class="dir-pct-col">
+              <span class="dir-pct">{{ dir.pct }}%</span>
+              <span class="dir-badge best" v-if="idx === 0">最佳匹配</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="insights-section">
+        <h3 class="section-title">深度分析</h3>
+        <article class="insight-card insight-card--match">
+          <div class="insight-card-accent"></div>
+          <div class="insight-card-body">
+            <span class="insight-card-tag">最匹配</span>
+            <h3>{{ directionResults[0].label }}</h3>
+            <p>{{ analysisText.topMatch }}</p>
+          </div>
+        </article>
+        <article class="insight-card insight-card--warn" v-if="directionResults[4]">
+          <div class="insight-card-accent"></div>
+          <div class="insight-card-body">
+            <span class="insight-card-tag">需关注</span>
+            <h3>{{ directionResults[4].label }}</h3>
+            <p>{{ analysisText.bottomMatch }}</p>
+          </div>
+        </article>
+        <article class="insight-card insight-card--tip">
+          <div class="insight-card-accent"></div>
+          <div class="insight-card-body">
+            <span class="insight-card-tag">建议</span>
+            <h3>职业发展</h3>
+            <p>{{ analysisText.general }}</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Heuristic Footer -->
+      <div class="heuristic-footer">
+        <p>"测试不是定义你，<br>是帮你看见自己。<br>任何能力都可以练，<br>关键是知道往哪练。"</p>
+      </div>
+      </div>
+
+      <div class="result-actions-bar">
+        <div class="result-actions">
+          <button type="button" class="btn btn-primary" @click="restartTest">重新测试</button>
+          <button type="button" class="btn btn-outline-primary" @click="generateResultImage" :disabled="savingImage">
+            {{ savingImage ? '生成中…' : '保存结果' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer">
+        <div class="disclaimer-title">📋 关于这份评估</div>
+        <ol>
+          <li>本测试基于 40 道自评题，得分反映的是你的自我认知和行为偏好，不是客观能力测量。</li>
+          <li>方向适配度由 7 个维度得分按加权矩阵计算得出，权重基于2026年各方向PM岗位的JD分析。</li>
+          <li>深度分析由规则模板生成，请将其视为职业思考的"起点"而非"终点"。</li>
+          <li>任何能力都可以通过刻意练习提升。如果结果不如预期，这恰恰说明你找到了成长的发力点。</li>
+          <li>本测试不会收集或上传你的个人数据。所有作答记录仅保存在你的浏览器本地存储中。</li>
+        </ol>
+      </div>
+    </div>
+  </template>
+
+  <!-- Save result preview modal -->
+  <transition name="fade">
+    <div class="modal-overlay" v-if="showSaveModal" @click.self="closeSaveModal">
+      <div class="modal modal-save">
+        <h2>保存结果</h2>
+        <div class="save-preview-wrap" v-if="previewImageUrl">
+          <img :src="previewImageUrl" alt="产品经理能力画像结果预览">
+        </div>
+        <p v-else style="font-size:13px;color:var(--c-text-secondary);text-align:center;margin-bottom:16px;">图片生成失败，请重试</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" @click="closeSaveModal">关闭</button>
+          <button type="button" class="btn btn-primary" @click="downloadResultImage" :disabled="!previewImageUrl">下载</button>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+  <!-- Continue Modal -->
+  <transition name="fade">
+    <div class="modal-overlay" v-if="showContinueModal" @click.self="dismissContinue">
+      <div class="modal">
+        <h2>发现未完成的测试</h2>
+        <p>你上次答到了第 {{ savedProgress }} 题，是否继续？</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" @click="dismissContinue">重新开始</button>
+          <button class="btn btn-primary" @click="continueTest">继续答题</button>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+<script>
+function loadScriptSequential(urls) {
+  return new Promise(function(resolve, reject) {
+    var i = 0;
+    function next() {
+      if (i >= urls.length) {
+        reject(new Error('script load failed: ' + urls[0]));
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = urls[i++];
+      s.async = false;
+      s.onload = function() { resolve(); };
+      s.onerror = function() { next(); };
+      document.head.appendChild(s);
+    }
+    next();
+  });
+}
+
+function showLoadError(msg) {
+  var el = document.getElementById('page-loading');
+  if (el) {
+    el.innerHTML = '<div style="text-align:center;padding:24px;max-width:320px;line-height:1.6;">' +
+      '<p style="color:#111827;font-weight:600;margin-bottom:8px;">加载失败</p>' +
+      '<p style="font-size:13px;margin-bottom:16px;">' + msg + '</p>' +
+      '<button type="button" onclick="location.reload()" style="padding:10px 24px;border:none;border-radius:10px;background:#4F46E5;color:#fff;font-size:14px;cursor:pointer;">重新加载</button></div>';
+  }
+}
+
+function bootApp() {
+  if (typeof Vue === 'undefined') {
+    showLoadError('Vue 未加载，请检查网络后刷新页面。');
+    return;
+  }
+  var createApp = Vue.createApp;
+
+const QUESTIONS = [
+  { id:1, category:'scenario', text:'老板会上提新功能，研发说本季排期已满。你的第一反应是？', options:[
+    {letter:'A', text:'先插队做老板需求，其余往后推'},
+    {letter:'B', text:'先确认背景目标，确急再谈置换排期'},
+    {letter:'C', text:'拒绝，告诉老板下期再排'},
+    {letter:'D', text:'让研发加班，老板需求不能等'},
+    {letter:'E', text:'先记下需求，做完手上再说'}
+  ], dims:{JUDGE:[5,'B'],COMM:[3,'B']}},
+  { id:2, category:'preference', text:'用到很别扭的产品时，你通常会？', options:[
+    {letter:'A', text:'抱怨两句就过去，反正不是我做的'},
+    {letter:'B', text:'截图吐槽，然后该干嘛干嘛'},
+    {letter:'C', text:'会想为何这样设计，我会怎么改'},
+    {letter:'D', text:'直接卸载换同类产品'},
+    {letter:'E', text:'去应用商店写差评'}
+  ], dims:{EMPATHY:[5,'C'],TASTE:[4,'C']}},
+  { id:3, category:'tech', text:'同事说「这功能用AI肯定行」，你会？', options:[
+    {letter:'A', text:'相信同事，AI现在啥都能做'},
+    {letter:'B', text:'先问解决啥、不准后果、有无更简方案'},
+    {letter:'C', text:'觉得AI太复杂，不如传统方法稳'},
+    {letter:'D', text:'让同事先做个Demo试试'},
+    {letter:'E', text:'去搜有没有类似产品已用AI解决'}
+  ], dims:{TECH:[5,'B'],JUDGE:[4,'B']}},
+  { id:4, category:'social', text:'评审会上研发说「这需求做不了」，但业务很重要。你会？', options:[
+    {letter:'A', text:'接受研发判断，做不了就算了'},
+    {letter:'B', text:'会后单独聊清不可能还是成本高'},
+    {letter:'C', text:'坚持要做，让研发技术上克服'},
+    {letter:'D', text:'回去让业务方降低预期'},
+    {letter:'E', text:'拉上研发leader一起调方案排期'}
+  ], dims:{COMM:[5,'B'],JUDGE:[3,'B']}},
+  { id:5, category:'scenario', text:'设计电商退款流程，哪种思考最接近你？', options:[
+    {letter:'A', text:'画全流程图，标每步异常与规则'},
+    {letter:'B', text:'参考淘宝京东，竞品流程直接套'},
+    {letter:'C', text:'先问客服退款最常见痛点'},
+    {letter:'D', text:'先做最简版，上线后快速迭代'},
+    {letter:'E', text:'先写详尽需求，枚举所有边界'}
+  ], dims:{LOGIC:[5,'A'],EMPATHY:[3,'C']}},
+  { id:6, category:'preference', text:'过去一年，你主动学新技能的频率是？', options:[
+    {letter:'A', text:'几乎没有，太忙没精力'},
+    {letter:'B', text:'偶尔被逼着学，不主动'},
+    {letter:'C', text:'感兴趣会学，热度过了就放下'},
+    {letter:'D', text:'常主动学新工具，大多能坚持掌握'},
+    {letter:'E', text:'每天都在学，不学就焦虑'}
+  ], dims:{GRIT:[5,'D'],TECH:[3,'D']}},
+  { id:7, category:'scenario', text:'竞品上了热议新功能，团队说「我们也做」。你会？', options:[
+    {letter:'A', text:'马上跟进，不然用户会流失'},
+    {letter:'B', text:'先弄清用户需求与定位是否匹配'},
+    {letter:'C', text:'不做，跟竞品没意思'},
+    {letter:'D', text:'做比竞品更好的版本超越'},
+    {letter:'E', text:'先灰度看用户反应再决定'}
+  ], dims:{JUDGE:[5,'B'],TASTE:[3,'B'],EMPATHY:[2,'B']}},
+  { id:8, category:'social', text:'项目折腾两月终于上线，数据一般，老板说效果不理想。你会？', options:[
+    {letter:'A', text:'很委屈，不全是我一个人的问题'},
+    {letter:'B', text:'先复盘原因，整理分析再汇报'},
+    {letter:'C', text:'老板说得对，我下次努力'},
+    {letter:'D', text:'有点麻木，起起伏伏正常'},
+    {letter:'E', text:'怀疑自己不适合，想换方向'}
+  ], dims:{GRIT:[5,'B'],COMM:[3,'B'],JUDGE:[3,'B']}},
+  { id:9, category:'tech', text:'哪项最符合你对AI的真实理解程度？', options:[
+    {letter:'A', text:'常用ChatGPT/豆包，不懂原理'},
+    {letter:'B', text:'懂预测下一词、幻觉与Prompt影响'},
+    {letter:'C', text:'懂Prompt与RAG，知何时微调'},
+    {letter:'D', text:'懂Agent机制，能判断是否适用'},
+    {letter:'E', text:'都不太符合，主要靠新闻了解'}
+  ], dims:{TECH:[5,'D'],LOGIC:[2,'D']}},
+  { id:10, category:'preference', text:'看到用户反馈「产品太难用」，你会？', options:[
+    {letter:'A', text:'觉得用户不会用，产品挺好'},
+    {letter:'B', text:'找到用户，问清难点并看操作'},
+    {letter:'C', text:'看有多少类似反馈，少数当个例'},
+    {letter:'D', text:'自己走一遍流程找卡点'},
+    {letter:'E', text:'转给产品/运营同事处理'}
+  ], dims:{EMPATHY:[5,'B'],TASTE:[3,'B']}},
+  { id:11, category:'scenario', text:'新功能首周使用率不到预估两成，有人要等有人要下。你会？', options:[
+    {letter:'A', text:'多等两周，等新功能冷启动'},
+    {letter:'B', text:'分析是入口、流失还是不知晓'},
+    {letter:'C', text:'立刻下线，方向肯定错了'},
+    {letter:'D', text:'加大运营推送把数据拉起来'},
+    {letter:'E', text:'找用户访谈后再判断'}
+  ], dims:{JUDGE:[5,'B'],LOGIC:[3,'B']}},
+  { id:12, category:'preference', text:'刷社交媒体/看资讯时，哪种最接近你？', options:[
+    {letter:'A', text:'主要看娱乐，很少看行业内容'},
+    {letter:'B', text:'看到行业文会点，但不刻意搜'},
+    {letter:'C', text:'关注博主，定期看并收藏观点'},
+    {letter:'D', text:'有RSS/信源体系，每天固定处理'},
+    {letter:'E', text:'除工作外几乎不看，多是噪音'}
+  ], dims:{GRIT:[4,'D'],TASTE:[3,'C']}},
+  { id:13, category:'tech', text:'AI客服要答「订单到哪了」，需查物流。哪种方案最合理？', options:[
+    {letter:'A', text:'物流文档喂RAG，从文档找答案'},
+    {letter:'B', text:'函数调用物流API再生成回答'},
+    {letter:'C', text:'订单全塞进Prompt让AI找'},
+    {letter:'D', text:'不管物流，生成通用配送话术'},
+    {letter:'E', text:'不清楚区别，交给技术决定'}
+  ], dims:{TECH:[5,'B'],JUDGE:[4,'B']}},
+  { id:14, category:'social', text:'评审会上设计负责人说交互不合理。你会？', options:[
+    {letter:'A', text:'尴尬但听完，有理接受无理私聊'},
+    {letter:'B', text:'立刻反驳，说有用户调研依据'},
+    {letter:'C', text:'很挫败，觉得自己设计不行'},
+    {letter:'D', text:'问哪里不合理，讨论怎么改'},
+    {letter:'E', text:'会后找用户测两方案用数据说话'}
+  ], dims:{COMM:[5,'D'],TASTE:[3,'D']}},
+  { id:15, category:'scenario', text:'访谈中有人要一键完成，有人要步步看清。你会？', options:[
+    {letter:'A', text:'听多数人，哪个多按哪个'},
+    {letter:'B', text:'关键步骤慢确认，非关键快完成'},
+    {letter:'C', text:'优先安全感，听步步看清的'},
+    {letter:'D', text:'优先效率，听一键完成的'},
+    {letter:'E', text:'做快速/安全两种模式可选'}
+  ], dims:{EMPATHY:[5,'B'],JUDGE:[4,'B']}},
+  { id:16, category:'preference', text:'工作之外，你最喜欢做什么？', options:[
+    {letter:'A', text:'打游戏追剧刷短视频休息'},
+    {letter:'B', text:'聚会聊天，和人连接充电'},
+    {letter:'C', text:'看书学技能，喂饱好奇心'},
+    {letter:'D', text:'运动徒步户外，重启大脑'},
+    {letter:'E', text:'捣鼓副业小项目，创造快乐'}
+  ], dims:{GRIT:[3,'C'],EMPATHY:[4,'B']}},
+  { id:17, category:'scenario', text:'内部看板：BI两天上线或自研两周，仅3人用。你选？', options:[
+    {letter:'A', text:'先BI两天上线，验证后再说'},
+    {letter:'B', text:'自研灵活度是长期竞争力'},
+    {letter:'C', text:'先不做，需求更明确再说'},
+    {letter:'D', text:'两方案并行，A先顶B同步'},
+    {letter:'E', text:'问研发BI能否折中改造'}
+  ], dims:{LOGIC:[5,'A'],TECH:[3,'A']}},
+  { id:18, category:'social', text:'推跨运营/研发/法务项目，三方都说忙或排不进。你会？', options:[
+    {letter:'A', text:'逐个聊清卡点，必要时找leader'},
+    {letter:'B', text:'邮件抄送各方与leader定deadline'},
+    {letter:'C', text:'先做不需配合的部分'},
+    {letter:'D', text:'找自己老板出面推'},
+    {letter:'E', text:'暂时搁置，等条件成熟'}
+  ], dims:{COMM:[5,'A'],GRIT:[2,'A']}},
+  { id:19, category:'tech', text:'AI写文案不符合品牌调性，哪种解决思路最接近你？', options:[
+    {letter:'A', text:'加提示「仅供参考请人工审核」'},
+    {letter:'B', text:'分析bad case写进Prompt并建评测集'},
+    {letter:'C', text:'不做AI文案，改回人工'},
+    {letter:'D', text:'换更强模型，能力上来就好'},
+    {letter:'E', text:'让用户先选正式/轻松等调性'}
+  ], dims:{TECH:[5,'B'],GRIT:[3,'B']}},
+  { id:20, category:'scenario', text:'本期无法交付全部规划功能，你的本能反应是？', options:[
+    {letter:'A', text:'按重要紧急矩阵砍，保核心质量'},
+    {letter:'B', text:'跟研发商量加人或加班全交付'},
+    {letter:'C', text:'让业务方定优先级'},
+    {letter:'D', text:'砍掉爽但用户价值小的功能'},
+    {letter:'E', text:'每项都砍到最小可用版'}
+  ], dims:{JUDGE:[6,'A'],LOGIC:[4,'A']}},
+  { id:21, category:'preference', text:'做完一个项目或功能后，你通常会？', options:[
+    {letter:'A', text:'松口气赶紧下一个，不复盘'},
+    {letter:'B', text:'心里过一遍得失，很少写下来'},
+    {letter:'C', text:'写复盘文档并分享给团队'},
+    {letter:'D', text:'主要复盘别人，自己没啥好复'},
+    {letter:'E', text:'不想回头看，向前看更重要'}
+  ], dims:{GRIT:[4,'C'],LOGIC:[3,'C']}},
+  { id:22, category:'scenario', text:'下班前支付状态bug影响0.1%用户，修要4小时；新功能测试未确认。你会？', options:[
+    {letter:'A', text:'先修bug，支付问题恐慌大于损失'},
+    {letter:'B', text:'按原计划上线新功能，bug用FAQ安抚'},
+    {letter:'C', text:'研发修bug，我确认新功能测试'},
+    {letter:'D', text:'发公告说状态延迟，先推新功能'},
+    {letter:'E', text:'问客服投诉多吗，不多先不管'}
+  ], dims:{JUDGE:[5,'A'],COMM:[2,'A']}},
+  { id:23, category:'social', text:'leader方向很坚持，你直觉有问题且数据部分支持。你会？', options:[
+    {letter:'A', text:'听leader的，他经验更丰富'},
+    {letter:'B', text:'先做最小版用真实数据说话'},
+    {letter:'C', text:'整理分析文档约leader单独聊'},
+    {letter:'D', text:'私下吐槽，会上照他说的做'},
+    {letter:'E', text:'会上直接提出不同意见'}
+  ], dims:{COMM:[4,'C'],JUDGE:[4,'C']}},
+  { id:24, category:'tech', text:'想了解一项新AI技术时，你通常会？', options:[
+    {letter:'A', text:'看几篇公众号了解概念就够'},
+    {letter:'B', text:'看文章视频，感兴趣就注册试试'},
+    {letter:'C', text:'自己试并想能否解决工作问题做Demo'},
+    {letter:'D', text:'除非工作要求，不主动研究'},
+    {letter:'E', text:'工作中已深度用AI工具持续关注'}
+  ], dims:{TECH:[5,'C'],GRIT:[4,'C']}},
+  { id:25, category:'scenario', text:'自认刚需的功能上线两周，仅零星使用。你首先会？', options:[
+    {letter:'A', text:'再等等，好功能需时间被发现'},
+    {letter:'B', text:'用数据看入口、点击、完成断点'},
+    {letter:'C', text:'怀疑需求不存在，考虑下线'},
+    {letter:'D', text:'加大引导弹窗红点让用户注意'},
+    {letter:'E', text:'找用户当面操作，只观察不说'}
+  ], dims:{EMPATHY:[5,'B'],JUDGE:[4,'B']}},
+  { id:26, category:'preference', text:'哪种说法最接近你对数据的态度？', options:[
+    {letter:'A', text:'信数据，数据说什么就是什么'},
+    {letter:'B', text:'数据重要但会骗人，结合直觉判断'},
+    {letter:'C', text:'不擅分析，依赖分析师结论'},
+    {letter:'D', text:'数据用来证明自己是对的'},
+    {letter:'E', text:'数据常不够准，更信访谈观察'}
+  ], dims:{LOGIC:[4,'B'],JUDGE:[3,'B']}},
+  { id:27, category:'scenario', text:'内部BI平台：运营要大屏、研发要API、leader要提速，资源只够一个。你会？', options:[
+    {letter:'A', text:'先做leader要求的报表提速'},
+    {letter:'B', text:'先做运营大屏，老板易感知'},
+    {letter:'C', text:'先做研发API，长期价值大'},
+    {letter:'D', text:'三件事各做一点，都不能做完'},
+    {letter:'E', text:'分别确认三方紧急度与真实价值'}
+  ], dims:{COMM:[4,'E'],JUDGE:[4,'E'],LOGIC:[3,'E']}},
+  { id:28, category:'social', text:'合作者最可能用哪个词形容你？', options:[
+    {letter:'A', text:'靠谱，交给我的事会搞定'},
+    {letter:'B', text:'聪明，总能想到别人没想到的'},
+    {letter:'C', text:'好沟通，合作不累有事说事'},
+    {letter:'D', text:'有主见，不容易被带跑'},
+    {letter:'E', text:'不确定，每个人评价不一样'}
+  ], dims:{COMM:[4,'C'],GRIT:[2,'A']}},
+  { id:29, category:'tech', text:'AI会议纪要功能，你如何判断好不好？', options:[
+    {letter:'A', text:'自己用几次感觉好就行'},
+    {letter:'B', text:'定遗漏率等指标用真会测试'},
+    {letter:'C', text:'看用户是否复制或重写纪要'},
+    {letter:'D', text:'问卷或访谈问用户满意度'},
+    {letter:'E', text:'不太会系统评估，看有无投诉'}
+  ], dims:{TECH:[5,'B'],JUDGE:[3,'B']}},
+  { id:30, category:'scenario', text:'产品同时服务政府与个人，政府要合规、个人嫌繁琐。你会？', options:[
+    {letter:'A', text:'两套体验，政府合规个人简化'},
+    {letter:'B', text:'先满足合规，再在框架下优化体验'},
+    {letter:'C', text:'先做个人体验，合规后端满足'},
+    {letter:'D', text:'合规法务定，我执行即可'},
+    {letter:'E', text:'参考竞品怎么处理'}
+  ], dims:{JUDGE:[5,'B'],LOGIC:[3,'B']}},
+  { id:31, category:'preference', text:'和朋友/同事因观点激烈分歧时，你通常会？', options:[
+    {letter:'A', text:'尽量说服，把道理讲清楚'},
+    {letter:'B', text:'听完再找共同点表达我的角度'},
+    {letter:'C', text:'聊不下去就换话题维护关系'},
+    {letter:'D', text:'表面不争，回去查资料验证'},
+    {letter:'E', text:'很开心辩论，争论是学习捷径'}
+  ], dims:{GRIT:[3,'E'],COMM:[3,'B']}},
+  { id:32, category:'scenario', text:'内部IM要加审批流：财务要定制，研发要抽象通用。你怎么做？', options:[
+    {letter:'A', text:'理解差异，抽象通用模型+可配置'},
+    {letter:'B', text:'支持财务，业务部门要啥做啥'},
+    {letter:'C', text:'两版本并行，定制先上通用后做'},
+    {letter:'D', text:'找更高层leader拍板策略'},
+    {letter:'E', text:'先不做，分歧太大等一等'}
+  ], dims:{LOGIC:[6,'A'],JUDGE:[4,'A']}},
+  { id:33, category:'social', text:'跨团队项目中与同事方案根本分歧，deadline临近。你会？', options:[
+    {letter:'A', text:'让双方leader介入决策'},
+    {letter:'B', text:'对齐成功标准，理解对方担忧'},
+    {letter:'C', text:'坚持自己方案更有依据'},
+    {letter:'D', text:'列表对比成本风险收益时间'},
+    {letter:'E', text:'折中出一版先交付再说'}
+  ], dims:{COMM:[5,'B'],GRIT:[3,'B']}},
+  { id:34, category:'tech', text:'Vibe Coding是用AI描述快速做原型，哪种最接近你的态度？', options:[
+    {letter:'A', text:'没用过也不想用，交给工程师'},
+    {letter:'B', text:'听说过没试过，感觉要懂代码'},
+    {letter:'C', text:'用Cursor等做过小东西，很新鲜'},
+    {letter:'D', text:'工作中用来做原型，比写文档高效'},
+    {letter:'E', text:'自己用还推动团队建规范模板'}
+  ], dims:{TECH:[5,'D'],GRIT:[4,'D']}},
+  { id:35, category:'scenario', text:'80%用户说要XX功能，但类似YY功能数据很差。你倾向？', options:[
+    {letter:'A', text:'信用户，YY可能只是没做好'},
+    {letter:'B', text:'信数据，行为比语言诚实'},
+    {letter:'C', text:'先弄清YY没人用是真需求还是体验差'},
+    {letter:'D', text:'做更好XX最小成本试错'},
+    {letter:'E', text:'继续访谈深挖真正需要什么'}
+  ], dims:{EMPATHY:[5,'E'],JUDGE:[4,'C']}},
+  { id:36, category:'preference', text:'面对海量AI动态、报告、竞品信息，你会？', options:[
+    {letter:'A', text:'焦虑但忍不住一直刷'},
+    {letter:'B', text:'只看与当前项目相关的'},
+    {letter:'C', text:'有过滤体系，重要源定期看'},
+    {letter:'D', text:'收藏一堆但从不打开'},
+    {letter:'E', text:'不太关注，专注手上事'}
+  ], dims:{GRIT:[3,'C'],LOGIC:[3,'C']}},
+  { id:37, category:'scenario', text:'政府客户要加「领导驾驶舱」大屏演示，本质是面子工程。你会？', options:[
+    {letter:'A', text:'客户要啥做啥，采购要满意'},
+    {letter:'B', text:'沟通领导真正关注点，或用现有数据展示'},
+    {letter:'C', text:'拒绝，时间应花在真价值需求'},
+    {letter:'D', text:'做简化版，标明定制另计维护费'},
+    {letter:'E', text:'交给销售售前去沟通'}
+  ], dims:{COMM:[5,'B'],JUDGE:[3,'B']}},
+  { id:38, category:'social', text:'重要决策方向与你判断不一致，你不是核心决策者。你会？', options:[
+    {letter:'A', text:'保持沉默，说多反而不好'},
+    {letter:'B', text:'私下跟决策者说顾虑，仅供参考'},
+    {letter:'C', text:'会上提出不同意见留另一种视角'},
+    {letter:'D', text:'默默接受，团队一致更重要'},
+    {letter:'E', text:'先不说，等执行后自然验证'}
+  ], dims:{COMM:[4,'B'],GRIT:[3,'B']}},
+  { id:39, category:'tech', text:'AI助手收到敏感问题（如是否该分手），你最认同？', options:[
+    {letter:'A', text:'AI应尽力回答，用户需要帮助'},
+    {letter:'B', text:'中立安全回复，引导找专业人士'},
+    {letter:'C', text:'统一回复无法回答敏感问题'},
+    {letter:'D', text:'按产品定位决定可否委婉回应'},
+    {letter:'E', text:'先看竞品怎么处理'}
+  ], dims:{TECH:[4,'D'],JUDGE:[4,'D']}},
+  { id:40, category:'preference', text:'一句话总结你对产品经理岗位的感觉？', options:[
+    {letter:'A', text:'兴奋，渴望解决复杂问题创造价值'},
+    {letter:'B', text:'有兴趣但不确定是否如想象'},
+    {letter:'C', text:'主要看薪资前景，热爱不确定'},
+    {letter:'D', text:'曾觉得适合，AI变化让我动摇'},
+    {letter:'E', text:'做测试看适不适合，不行换方向'}
+  ], dims:{GRIT:[3,'A'],EMPATHY:[3,'A']}}
+];
+
+// Weight matrix: 7 dimensions x 5 directions
+const WEIGHT_MATRIX = {
+  toC: { JUDGE:0.10, LOGIC:0.05, EMPATHY:0.30, TASTE:0.25, TECH:0.05, COMM:0.10, GRIT:0.15 },
+  toB: { JUDGE:0.15, LOGIC:0.25, EMPATHY:0.05, TASTE:0.05, TECH:0.15, COMM:0.25, GRIT:0.10 },
+  'AI PM': { JUDGE:0.20, LOGIC:0.10, EMPATHY:0.05, TASTE:0.05, TECH:0.35, COMM:0.05, GRIT:0.20 },
+  toM: { JUDGE:0.15, LOGIC:0.30, EMPATHY:0.05, TASTE:0.05, TECH:0.15, COMM:0.20, GRIT:0.10 },
+  toG: { JUDGE:0.25, LOGIC:0.10, EMPATHY:0.10, TASTE:0.05, TECH:0.05, COMM:0.30, GRIT:0.15 }
+};
+
+const DIMENSION_NAMES = {
+  JUDGE: '判断取舍力', LOGIC: '逻辑系统力', EMPATHY: '用户洞察力',
+  TASTE: '产品审美力', TECH: '技术理解力', COMM: '沟通推动力', GRIT: '心力续航力'
+};
+
+const DIRECTION_NAMES = {
+  toC: 'toC（面向个人用户）', toB: 'toB（面向企业客户）',
+  'AI PM': 'AI PM（AI产品方向）', toM: 'toM（中台/内部平台）', toG: 'toG（政府/公共事业）'
+};
+
+const STORAGE_KEY = 'pm-test-answers';
+const STORAGE_PROGRESS_KEY = 'pm-test-progress';
+const STORAGE_ORDER_KEY = 'pm-test-order';
+const LOGO_URL = 'docs/dollVerse_logo.png';
+
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+  }
+  return a;
+}
+
+createApp({
+  data() {
+    return {
+      appState: 'welcome', // welcome | quiz | result
+      currentQ: 0,
+      questionOrder: [],
+      selectedAnswers: {},
+      slideDirection: 'slide-left',
+      showContinueModal: false,
+      savedProgress: 0,
+      optionLocked: false,
+      showSaveModal: false,
+      previewImageUrl: '',
+      savingImage: false,
+      radarChart: null,
+      radarSize: 300,
+      windowWidth: 375
+    };
+  },
+  computed: {
+    questions() {
+      if (!this.questionOrder.length) return QUESTIONS;
+      var self = this;
+      return this.questionOrder.map(function(i) { return QUESTIONS[i]; });
+    },
+    currentQuestion() {
+      return this.questions[this.currentQ] || QUESTIONS[0];
+    },
+    answeredCount() { return Object.keys(this.selectedAnswers).length; },
+    progressPct() { return (this.answeredCount / QUESTIONS.length) * 100; },
+    categoryLabels() {
+      return { scenario:'情景判断', preference:'偏好与习惯', tech:'技术认知', social:'人际互动' };
+    },
+
+    // Calculate raw dimension scores (0-100)
+    dimensionScores() {
+      const scores = { JUDGE:0, LOGIC:0, EMPATHY:0, TASTE:0, TECH:0, COMM:0, GRIT:0 };
+      const counts = { JUDGE:0, LOGIC:0, EMPATHY:0, TASTE:0, TECH:0, COMM:0, GRIT:0 };
+
+      QUESTIONS.forEach((q) => {
+        const answer = this.selectedAnswers[q.id];
+        if (answer === null || answer === undefined) return;
+        const dims = q.dims;
+        Object.entries(dims).forEach(([dim, [weight, bestAnswer]]) => {
+          if (answer === bestAnswer) {
+            scores[dim] += weight;
+          }
+          counts[dim] += weight;
+        });
+      });
+
+      // Normalize to 0-100
+      const norm = {};
+      Object.keys(scores).forEach(dim => {
+        norm[dim] = counts[dim] > 0 ? Math.round((scores[dim] / counts[dim]) * 100) : 50;
+      });
+      return norm;
+    },
+
+    dimensionScoresDisplay() {
+      const scores = this.dimensionScores;
+      const dims = ['JUDGE','LOGIC','EMPATHY','TASTE','TECH','COMM','GRIT'];
+      const maxScore = Math.max(...dims.map(d => scores[d]));
+      return dims.map(key => ({
+        key, label: DIMENSION_NAMES[key], score: scores[key], isTop: scores[key] === maxScore
+      }));
+    },
+
+    directionResults() {
+      const scores = this.dimensionScores;
+      const results = [];
+      Object.entries(WEIGHT_MATRIX).forEach(([dir, weights]) => {
+        let total = 0, wSum = 0;
+        Object.entries(weights).forEach(([dim, w]) => {
+          total += (scores[dim] || 50) * w;
+          wSum += w;
+        });
+        const pct = wSum > 0 ? Math.round(total / wSum) : 50;
+        results.push({ key: dir, label: DIRECTION_NAMES[dir], pct });
+      });
+      results.sort((a, b) => b.pct - a.pct);
+      return results.map((r, i) => ({
+        ...r,
+        barClass: i === 0 ? 'top' : r.pct >= 80 ? 'high' : r.pct >= 65 ? 'mid' : 'low'
+      }));
+    },
+
+    analysisText() {
+      const dirs = this.directionResults;
+      const dims = this.dimensionScoresDisplay;
+      const topDim = dims.find(d => d.isTop) || dims[0];
+      const bottomDim = [...dims].sort((a,b) => a.score - b.score)[0];
+      const topDir = dirs[0];
+      const bottomDir = dirs[4];
+      const variance = this.calcVariance(dims.map(d => d.score));
+
+      const topMatch = this.getTopMatchAnalysis(topDir, topDim);
+      const bottomMatch = this.getBottomMatchAnalysis(bottomDir, bottomDim);
+      const general = this.getGeneralAnalysis(dims, variance);
+
+      return { topMatch, bottomMatch, general };
+    }
+  },
+  methods: {
+    calcVariance(scores) {
+      const mean = scores.reduce((a,b) => a+b, 0) / scores.length;
+      return scores.reduce((a,b) => a + Math.pow(b-mean,2), 0) / scores.length;
+    },
+
+    getTopMatchAnalysis(dir, topDim) {
+      const tpls = [];
+      if (topDim.key === 'EMPATHY' && dir.key === 'toC') {
+        tpls.push('你对用户需求的敏锐度是你的核心资产。在C端产品中，这种"能感受到用户哪里不爽"的直觉，是数据永远替代不了的。但要注意：同理心太强有时会让你过度迁就用户反馈而忽略了商业逻辑。');
+      }
+      if (topDim.key === 'LOGIC' && (dir.key === 'toB' || dir.key === 'toM')) {
+        tpls.push('你的系统思维和逻辑拆解能力，在这个方向中如鱼得水。你很擅长在复杂的业务流程中找到那条最清晰的路径。你最大的优势是能把"一团乱麻"梳理成端到端的清晰方案。');
+      }
+      if (topDim.key === 'TECH' && dir.key === 'AI PM') {
+        tpls.push('在2026年依然保持对技术的敏锐学习和判断力，这本身就是一种稀缺能力。做AI产品，你不会被工程师"这个做不了"的说辞拦住，因为你大概知道能做不能做。但你的挑战可能是"技术兴奋度过高"，不是所有问题都需要AI来解决。');
+      }
+      if (topDim.key === 'COMM') {
+        tpls.push('你的沟通推动力是你最亮眼的能力。在产品经理这个没有行政权力但有无限责任的岗位上，能推动各方共识的人，就是项目的"隐形引擎"。重点发挥这个优势：在关键决策节点上，由你来主持对齐。');
+      }
+      if (topDim.key === 'GRIT') {
+        tpls.push('你的续航力让人印象深刻。产品经理是一场马拉松，不是短跑。在2026年变化极快的环境下，能在混沌中持续前进本身就是非常珍贵的品质。建议发挥这个优势：主动承担需要"长期耐力"的项目。');
+      }
+      if (topDim.key === 'JUDGE') {
+        tpls.push('你展现出很强的判断取舍能力，这在"做什么不做什么"的决策中至关重要。你的优势在于能看到问题的本质而不是被表面需求牵着走。进入这个方向后，建议前3个月重点建立你对业务领域知识的地图，让你的判断力有更扎实的底座。');
+      }
+      if (topDim.key === 'TASTE') {
+        tpls.push('你的产品审美力是你的差异化竞争力。在AI能生成无数方案的时代，"选哪个"的能力比"做出来"的能力更稀缺。你的直觉能让你在众多方案中挑出真正好用的那个。建议多积累"好设计"的案例库，让你的审美从直觉升级为系统。');
+      }
+
+      if (tpls.length === 0) {
+        tpls.push('你的能力画像与' + dir.label + '方向有很高的匹配度。进入这个方向后，你最大的优势在于你的能力组合与该方向的核心要求高度契合。建议在前3个月重点建立对行业和用户的深入理解，让你的能力在具体场景中落地。');
+      }
+      return tpls.join(' ');
+    },
+
+    getBottomMatchAnalysis(dir, bottomDim) {
+      const tpls = [];
+      if (dir.key === 'toG') {
+        tpls.push('toG方向对你的挑战不在于"事情本身难"，而在于"做事的方式和你习惯的不一样"。toG的日常是大量的汇报文档、冗长的审批流程、以及"领导满意"比"用户满意"更重要的价值排序。如果你执意要去，最需要补的不是产品能力，而是"耐心倾听+精准表达"的沟通习惯。');
+      }
+      if (bottomDim.key === 'GRIT') {
+        tpls.push('你各方面能力都不错，唯一需要关注的是"续航力"。产品经理是一场马拉松，你可能会在前3个月冲得很猛，但如果项目遇到反复，你可能比其他人更容易产生"我是不是不适合"的怀疑。给自己设置"小里程碑"，用短期正反馈来对冲长期不确定性。');
+      }
+      if (bottomDim.key === 'TECH') {
+        tpls.push('在2026年，技术理解力的短板会比较明显地影响你在AI相关方向上的竞争力。但不一定要成为技术专家：关键是建立起对AI能力边界的基本认知框架。建议从每天花15分钟了解一个AI产品功能开始，积累"AI能做什么、不能做什么"的直觉。');
+      }
+      if (bottomDim.key === 'EMPATHY') {
+        tpls.push('用户洞察力的短板可能让你在需要深度理解用户的方向上感到吃力。这不一定意味着你缺乏同理心，而可能是你更习惯用逻辑而非直觉去理解问题。建议刻意练习"用户观察"：每月找2-3个真实用户，不要问问题，就静静地看他们怎么用产品。');
+      }
+      if (bottomDim.key === 'COMM') {
+        tpls.push('沟通推动力是你需要关注的维度。产品经理的工作本质是"影响力驱动"，没有行政权力但要推动各方前进。建议从小的协作习惯开始练习：每次会议前先想清楚"我想让谁、做什么、为什么"，把沟通从"信息传递"升级为"共识推动"。');
+      }
+      if (tpls.length === 0) {
+        tpls.push(dir.label + '方向和你当前的画像匹配度相对较低。这并不意味着你不能做，而是需要刻意在某些维度上补强。建议先深入了解这个方向的真实工作日常，确认自己是否真的愿意接受这些挑战。');
+      }
+      return tpls.join(' ');
+    },
+
+    getGeneralAnalysis(dims, variance) {
+      const tpls = [];
+      if (variance < 80) {
+        tpls.push('你的能力画像非常均衡——没有明显的短板，但也没有绝对突出的长板。这意味着你是一个"即插即用"型选手，放在哪个方向都能快速上手。但也意味着你可能需要在某个维度上有意识地"刻意突出"，找到你真正热爱的方向，在那个方向的核心维度上持续深耕，让你的长板长到别人一眼就能认出来。');
+      } else {
+        const top = dims.find(d => d.isTop);
+        const sorted = [...dims].sort((a,b) => a.score - b.score);
+        const bottom = sorted[0];
+        tpls.push('你的能力画像有明显的长板和短板。你的' + top.label + '是你的核心竞争力，建议在职业选择中优先寻找能最大化发挥这个能力的场景。而' + bottom.label + '虽然目前是短板，但可以通过刻意练习来提升。关键是：不要为了补齐短板而牺牲长板的发挥空间——找到需要你长板的场景，短板用合作来补。');
+      }
+      return tpls.join(' ');
+    },
+
+    initQuestionOrder() {
+      this.questionOrder = shuffleArray(QUESTIONS.map(function(_, i) { return i; }));
+    },
+
+    getFirstUnansweredIndex() {
+      for (var i = 0; i < this.questionOrder.length; i++) {
+        var q = QUESTIONS[this.questionOrder[i]];
+        if (this.selectedAnswers[q.id] == null) return i;
+      }
+      return this.questionOrder.length;
+    },
+
+    migrateLegacyAnswers(parsed) {
+      var keys = Object.keys(parsed);
+      if (!keys.length) return parsed;
+      var looksLegacy = keys.every(function(k) { return /^\d+$/.test(k) && parseInt(k, 10) < QUESTIONS.length; });
+      if (!looksLegacy) return parsed;
+      var next = {};
+      keys.forEach(function(k) {
+        var q = QUESTIONS[parseInt(k, 10)];
+        if (q) next[q.id] = parsed[k];
+      });
+      return next;
+    },
+
+    startTest() {
+      this.initQuestionOrder();
+      this.selectedAnswers = {};
+      this.currentQ = 0;
+      this.optionLocked = false;
+      this.slideDirection = 'slide-left';
+      this.appState = 'quiz';
+      this.saveProgress();
+    },
+
+    selectOption(letter) {
+      if (this.optionLocked) return;
+
+      var qid = this.currentQuestion.id;
+      var hadAnswer = this.selectedAnswers[qid] != null;
+      var sameAnswer = this.selectedAnswers[qid] === letter;
+
+      this.selectedAnswers[qid] = letter;
+      this.saveProgress();
+
+      // 回退后：点已选选项 = 进入下一题；点其他选项 = 改答案后进入下一题
+      if (hadAnswer) {
+        var delay = sameAnswer ? 0 : 400;
+        this.optionLocked = true;
+        var self = this;
+        setTimeout(function() {
+          self.optionLocked = false;
+          self.goNextQuestion();
+        }, delay);
+        return;
+      }
+
+      this.optionLocked = true;
+      var self = this;
+      setTimeout(function() {
+        self.optionLocked = false;
+        self.goNextQuestion();
+      }, 500);
+    },
+
+    goNextQuestion() {
+      if (this.answeredCount >= this.questions.length) {
+        this.appState = 'result';
+        this.$nextTick(function() { this.initResultPage(); }.bind(this));
+        return;
+      }
+      if (this.currentQ < this.questions.length - 1) {
+        this.slideDirection = 'slide-left';
+        this.currentQ++;
+      }
+    },
+
+    nextQuestion() {
+      if (this.selectedAnswers[this.currentQuestion.id] == null) return;
+      this.optionLocked = false;
+      this.goNextQuestion();
+    },
+
+    prevQuestion() {
+      if (this.currentQ > 0) {
+        this.optionLocked = false;
+        this.slideDirection = 'slide-right';
+        this.currentQ--;
+      }
+    },
+
+    saveProgress() {
+      try {
+        if (this.questionOrder.length) {
+          localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(this.questionOrder));
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.selectedAnswers));
+        var progress = this.questionOrder.length ? this.getFirstUnansweredIndex() : this.answeredCount;
+        localStorage.setItem(STORAGE_PROGRESS_KEY, progress);
+      } catch(e) {}
+    },
+
+    loadProgress() {
+      try {
+        var data = localStorage.getItem(STORAGE_KEY);
+        if (!data) return;
+        this.selectedAnswers = this.migrateLegacyAnswers(JSON.parse(data));
+        var orderData = localStorage.getItem(STORAGE_ORDER_KEY);
+        if (orderData) {
+          this.questionOrder = JSON.parse(orderData);
+        } else if (Object.keys(this.selectedAnswers).length) {
+          this.initQuestionOrder();
+        }
+        var progress = this.questionOrder.length
+          ? this.getFirstUnansweredIndex()
+          : parseInt(localStorage.getItem(STORAGE_PROGRESS_KEY), 10) || 0;
+        if (progress > 0 && progress < QUESTIONS.length) {
+          this.savedProgress = progress;
+          this.showContinueModal = true;
+        } else if (this.answeredCount >= QUESTIONS.length) {
+          this.appState = 'result';
+          this.$nextTick(function() { this.initResultPage(); }.bind(this));
+        }
+      } catch(e) {}
+    },
+
+    continueTest() {
+      this.showContinueModal = false;
+      this.currentQ = this.savedProgress;
+      this.optionLocked = false;
+      this.appState = 'quiz';
+    },
+
+    dismissContinue() {
+      this.showContinueModal = false;
+      this.selectedAnswers = {};
+      this.questionOrder = [];
+      this.currentQ = 0;
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_PROGRESS_KEY);
+        localStorage.removeItem(STORAGE_ORDER_KEY);
+      } catch(e) {}
+    },
+
+    closeSaveModal() {
+      this.showSaveModal = false;
+    },
+
+    loadImageAsset(src) {
+      return new Promise(function(resolve, reject) {
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() { resolve(img); };
+        img.onerror = function() { reject(new Error('logo load failed')); };
+        img.src = src;
+      });
+    },
+
+    generateResultImage() {
+      var self = this;
+      if (typeof html2canvas === 'undefined') {
+        alert('截图组件未加载，请刷新页面后重试');
+        return;
+      }
+      var el = this.$refs.resultCapture;
+      if (!el) return;
+
+      this.savingImage = true;
+      this.previewImageUrl = '';
+
+      this.$nextTick(function() {
+        el.classList.add('is-capturing', 'scores-revealed');
+
+        var doCapture = function() {
+          return html2canvas(el, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: '#F8F9FB',
+            logging: false,
+            scrollY: -window.scrollY,
+            windowWidth: el.scrollWidth,
+            width: el.scrollWidth,
+            height: el.scrollHeight,
+            onclone: function(clonedDoc) {
+              var root = clonedDoc.querySelector('.result-capture');
+              if (!root) return;
+              root.classList.add('is-capturing', 'scores-revealed');
+              var rows = root.querySelectorAll('.score-row');
+              rows.forEach(function(row) {
+                row.style.opacity = '1';
+                row.style.transform = 'none';
+                row.style.animation = 'none';
+              });
+            }
+          });
+        };
+
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            doCapture().then(function(canvas) {
+              return self.loadImageAsset(LOGO_URL).then(function(logo) {
+                var padding = 32;
+                var logoH = Math.round(36 * 2);
+                var logoW = Math.round(logo.width * (logoH / logo.height));
+                var footerH = logoH + padding * 2;
+                var out = document.createElement('canvas');
+                out.width = canvas.width;
+                out.height = canvas.height + footerH;
+                var ctx = out.getContext('2d');
+                ctx.fillStyle = '#F8F9FB';
+                ctx.fillRect(0, 0, out.width, out.height);
+                ctx.drawImage(canvas, 0, 0);
+                var lx = (out.width - logoW) / 2;
+                var ly = canvas.height + padding;
+                ctx.drawImage(logo, lx, ly, logoW, logoH);
+                self.previewImageUrl = out.toDataURL('image/png', 0.92);
+                self.showSaveModal = true;
+              });
+            }).catch(function(err) {
+              console.error(err);
+              alert('生成图片失败，请确认通过网页服务器访问（非直接打开文件）后重试');
+            }).finally(function() {
+              el.classList.remove('is-capturing');
+              self.savingImage = false;
+            });
+          });
+        });
+      });
+    },
+
+    downloadResultImage() {
+      if (!this.previewImageUrl) return;
+      var a = document.createElement('a');
+      var d = new Date();
+      var stamp = d.getFullYear() + '' + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+      a.href = this.previewImageUrl;
+      a.download = '产品经理能力画像_' + stamp + '.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+
+    restartTest() {
+      this.closeSaveModal();
+      this.previewImageUrl = '';
+      this.selectedAnswers = {};
+      this.questionOrder = [];
+      this.currentQ = 0;
+      this.optionLocked = false;
+      this.showContinueModal = false;
+      this.appState = 'welcome';
+      this.slideDirection = 'slide-left';
+      if (this.radarChart) { this.radarChart.destroy(); this.radarChart = null; }
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_PROGRESS_KEY);
+        localStorage.removeItem(STORAGE_ORDER_KEY);
+      } catch(e) {}
+    },
+
+    initResultPage() {
+      var self = this;
+      this.$nextTick(function() {
+        self.initRadarChart();
+        self.fireConfetti();
+        setTimeout(function() {
+          var cap = self.$refs.resultCapture;
+          if (cap) cap.classList.add('scores-revealed');
+        }, 1100);
+      });
+    },
+
+    fireConfetti() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      setTimeout(() => {
+        if (typeof confetti !== 'undefined') {
+          confetti({ particleCount: 80, spread: 70, origin: { y: 0.3, x: 0.5 }, colors: ['#4F46E5','#10B981','#F59E0B','#EF4444','#6366F1'] });
+        }
+      }, 400);
+    },
+
+    initRadarChart() {
+      if (this.radarChart) { this.radarChart.destroy(); }
+      const canvas = this.$refs.radarCanvas;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const scores = this.dimensionScores;
+      const dims = ['JUDGE','LOGIC','EMPATHY','TASTE','TECH','COMM','GRIT'];
+      const labels = dims.map(d => DIMENSION_NAMES[d]);
+      const data = dims.map(d => scores[d] || 50);
+
+      // Responsive size
+      const w = Math.min(this.windowWidth - 64, 360);
+      canvas.style.width = w + 'px';
+      canvas.style.height = w + 'px';
+
+      this.radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels,
+          datasets: [{
+            label: '你的能力画像',
+            data,
+            backgroundColor: 'rgba(99, 102, 241, 0.22)',
+            borderColor: '#4F46E5',
+            borderWidth: 2.5,
+            pointBackgroundColor: '#4F46E5',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          animation: { duration: 900, easing: 'easeOutQuart' },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              min: 0,
+              ticks: {
+                stepSize: 20,
+                display: true,
+                backdropColor: 'rgba(255,255,255,0.85)',
+                font: { size: 9 },
+                color: '#9CA3AF',
+                count: 5
+              },
+              pointLabels: {
+                font: { size: 11, weight: '600' },
+                color: '#374151',
+                padding: 6
+              },
+              grid: { color: 'rgba(79, 70, 229, 0.08)' },
+              angleLines: { color: 'rgba(79, 70, 229, 0.12)' }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#111827',
+              titleFont: { size: 13 },
+              bodyFont: { size: 14 },
+              callbacks: { label: ctx => ' ' + ctx.raw + ' 分' }
+            }
+          }
+        }
+      });
+    },
+
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+      if (this.radarChart && this.appState === 'result') {
+        this.initRadarChart();
+      }
+    }
+  },
+  watch: {
+    selectedAnswers: {
+      deep: true,
+      handler() { this.saveProgress(); }
+    }
+  },
+  mounted() {
+    this.windowWidth = window.innerWidth;
+    window.addEventListener('resize', this.handleResize);
+    this.loadProgress();
+    var loading = document.getElementById('page-loading');
+    if (loading) loading.style.display = 'none';
+    document.getElementById('app').setAttribute('data-ready', '1');
+
+    var self = this;
+    window.addEventListener('keydown', function(e) {
+      if (self.appState !== 'quiz') return;
+      if (['1','2','3','4','5'].includes(e.key)) {
+        var idx = parseInt(e.key, 10) - 1;
+        var letters = ['A','B','C','D','E'];
+        if (idx < letters.length) self.selectOption(letters[idx]);
+      }
+      if (e.key === 'ArrowLeft') { self.prevQuestion(); }
+      if (e.key === 'ArrowRight' && self.selectedAnswers[self.currentQuestion.id] != null) {
+        self.nextQuestion();
+      }
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+}).mount('#app');
+}
+
+var VUE_CDNS = [
+  'https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.js',
+  'https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js',
+  'https://cdn.bootcdn.net/ajax/libs/vue/3.4.21/vue.global.prod.min.js'
+];
+var CHART_CDNS = [
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
+  'https://unpkg.com/chart.js@4.4.0/dist/chart.umd.min.js',
+  'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js'
+];
+var CONFETTI_CDNS = [
+  'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js',
+  'https://unpkg.com/canvas-confetti@1.9.4/dist/confetti.browser.min.js'
+];
+var HTML2CANVAS_CDNS = [
+  'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+  'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js',
+  'https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
+];
+
+loadScriptSequential(VUE_CDNS)
+  .then(function() { return loadScriptSequential(CHART_CDNS); })
+  .then(function() { return loadScriptSequential(CONFETTI_CDNS); })
+  .then(function() { return loadScriptSequential(HTML2CANVAS_CDNS); })
+  .then(bootApp)
+  .catch(function() {
+    showLoadError('依赖脚本加载失败，请连接网络后刷新。若使用 file:// 打开，请用本地服务器访问（如 npx serve）。');
+  });
+</script>
+</body>
+</html>
