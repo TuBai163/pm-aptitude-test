@@ -101,6 +101,42 @@ body {
 
 .nav-back svg { width: 16px; height: 16px; }
 
+.nav-bar--welcome {
+  position: relative;
+}
+
+.lang-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: var(--c-primary);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.15s, color 0.15s;
+}
+.lang-btn:hover { background: var(--c-primary-light); }
+.lang-btn svg { width: 22px; height: 22px; }
+.lang-btn-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 .nav-next {
   flex-direction: row-reverse;
   justify-content: flex-end;
@@ -894,6 +930,7 @@ body {
   color: var(--c-text);
   line-height: 1.85;
   position: relative;
+  white-space: pre-line;
 }
 
 /* Disclaimer */
@@ -1056,8 +1093,16 @@ body {
 <div id="app" v-cloak>
   <template v-if="appState === 'welcome'">
     <!-- ========== WELCOME PAGE ========== -->
-    <div class="nav-bar" style="justify-content:center;border-bottom:none;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;">
-      <span style="font-size:13px;font-weight:600;color:var(--c-text-secondary);">产品经理适配度测评 2026</span>
+    <div class="nav-bar nav-bar--welcome" style="justify-content:center;border-bottom:none;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;">
+      <span style="font-size:13px;font-weight:600;color:var(--c-text-secondary);">{{ t('welcome.navTitle') }}</span>
+      <button type="button" class="lang-btn" @click="toggleLang" :aria-label="t('welcome.langBtn')" :title="t('welcome.langBtn')">
+        <span class="lang-btn-label">{{ t('welcome.langBtn') }}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </button>
     </div>
     <div class="page-content">
       <div class="welcome">
@@ -1069,17 +1114,17 @@ body {
             <line x1="15" y1="9" x2="15.01" y2="9"/>
           </svg>
         </div>
-        <h1>测测你有多适合<br>当产品经理</h1>
-        <p class="welcome-sub">不是二分法的「是/否」，而是揭示你的能力光谱与方向适配度。</p>
-        <p class="welcome-hint">基于2026年产品经理核心能力调研</p>
+        <h1>{{ t('welcome.title1') }}<br>{{ t('welcome.title2') }}</h1>
+        <p class="welcome-sub">{{ t('welcome.sub') }}</p>
+        <p class="welcome-hint">{{ t('welcome.hint') }}</p>
         <div class="welcome-info">
-          <div class="welcome-info-item"><div class="welcome-info-num">40</div><div class="welcome-info-label">道情景题</div></div>
-          <div class="welcome-info-item"><div class="welcome-info-num">~10</div><div class="welcome-info-label">分钟完成</div></div>
-          <div class="welcome-info-item"><div class="welcome-info-num">7维</div><div class="welcome-info-label">能力评估</div></div>
-          <div class="welcome-info-item"><div class="welcome-info-num">5向</div><div class="welcome-info-label">方向适配</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">40</div><div class="welcome-info-label">{{ t('welcome.items') }}</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">~10</div><div class="welcome-info-label">{{ t('welcome.mins') }}</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">7{{ t('welcome.dims') }}</div><div class="welcome-info-label">{{ t('welcome.dimsLabel') }}</div></div>
+          <div class="welcome-info-item"><div class="welcome-info-num">5{{ t('welcome.dirs') }}</div><div class="welcome-info-label">{{ t('welcome.dirsLabel') }}</div></div>
         </div>
         <button class="btn btn-primary" @click="startTest" style="width:100%;max-width:280px;">
-          开始测评
+          {{ t('welcome.startBtn') }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
       </div>
@@ -1091,11 +1136,11 @@ body {
     <div class="nav-bar">
       <button class="nav-back" @click="prevQuestion" :disabled="currentQ === 0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        上一题
+        {{ t('quiz.prev') }}
       </button>
       <span class="nav-progress-text">{{ currentQ + 1 }} / {{ questions.length }}</span>
       <button class="nav-back nav-next" @click="nextQuestion" :disabled="selectedAnswers[currentQuestion.id] == null || currentQ >= questions.length - 1">
-        下一题
+        {{ t('quiz.next') }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
     </div>
@@ -1109,10 +1154,10 @@ body {
           <span class="question-type-tag" :class="'tag-' + currentQuestion.category">
             {{ categoryLabels[currentQuestion.category] }}
           </span>
-          <div class="question-text">{{ currentQuestion.text }}</div>
+          <div class="question-text">{{ currentQuestionText }}</div>
           <div class="options-list">
             <button
-              v-for="(opt, idx) in currentQuestion.options"
+              v-for="(opt, idx) in currentQuestionOptions"
               :key="idx"
               class="option-btn"
               :class="{ 'option-selected': selectedAnswers[currentQuestion.id] === opt.letter }"
@@ -1135,25 +1180,25 @@ body {
     <div class="page-content result-wrap">
       <div ref="resultCapture" class="result-capture">
       <header class="result-hero">
-        <span class="result-hero-badge">2026 · PM 测评</span>
-        <h2>测评完成</h2>
-        <p class="result-hero-sub">你的产品经理能力画像</p>
+        <span class="result-hero-badge">{{ t('result.badge') }}</span>
+        <h2>{{ t('result.title') }}</h2>
+        <p class="result-hero-sub">{{ t('result.sub') }}</p>
         <div class="result-hero-highlight" v-if="directionResults[0]">
-          <span class="result-hero-highlight-label">最佳适配</span>
+          <span class="result-hero-highlight-label">{{ t('result.bestFit') }}</span>
           <span class="result-hero-highlight-name">{{ directionResults[0].label }}</span>
           <span class="result-hero-highlight-pct">{{ directionResults[0].pct }}%</span>
         </div>
       </header>
 
       <section class="result-block">
-        <h3 class="section-title">能力雷达</h3>
+        <h3 class="section-title">{{ t('result.radar') }}</h3>
         <div class="radar-container">
           <canvas ref="radarCanvas" :width="radarSize" :height="radarSize"></canvas>
         </div>
       </section>
 
       <section class="result-block scores-section">
-        <h3 class="section-title">能力维度</h3>
+        <h3 class="section-title">{{ t('result.dims') }}</h3>
         <div class="score-list">
           <div
             v-for="(dim, idx) in dimensionScoresDisplay"
@@ -1166,7 +1211,7 @@ body {
               <span class="score-label">{{ dim.label }}</span>
               <span class="score-value-wrap">
                 <span class="score-value" :class="{ 'is-top': dim.isTop }">{{ dim.score }}</span>
-                <span class="score-top-badge" v-if="dim.isTop">最高</span>
+                <span class="score-top-badge" v-if="dim.isTop">{{ t('result.top') }}</span>
               </span>
             </div>
             <div class="score-bar-bg">
@@ -1177,7 +1222,7 @@ body {
       </section>
 
       <section class="direction-section">
-        <h3 class="section-title">方向适配度</h3>
+        <h3 class="section-title">{{ t('result.direction') }}</h3>
         <div class="direction-list">
           <div
             v-for="(dir, idx) in directionResults"
@@ -1194,18 +1239,18 @@ body {
             </div>
             <div class="dir-pct-col">
               <span class="dir-pct">{{ dir.pct }}%</span>
-              <span class="dir-badge best" v-if="idx === 0">最佳匹配</span>
+              <span class="dir-badge best" v-if="idx === 0">{{ t('result.bestMatch') }}</span>
             </div>
           </div>
         </div>
       </section>
 
       <section class="insights-section">
-        <h3 class="section-title">深度分析</h3>
+        <h3 class="section-title">{{ t('result.insights') }}</h3>
         <article class="insight-card insight-card--match">
           <div class="insight-card-accent"></div>
           <div class="insight-card-body">
-            <span class="insight-card-tag">最匹配</span>
+            <span class="insight-card-tag">{{ t('result.bestFitTag') }}</span>
             <h3>{{ directionResults[0].label }}</h3>
             <p>{{ analysisText.topMatch }}</p>
           </div>
@@ -1213,7 +1258,7 @@ body {
         <article class="insight-card insight-card--warn" v-if="directionResults[4]">
           <div class="insight-card-accent"></div>
           <div class="insight-card-body">
-            <span class="insight-card-tag">需关注</span>
+            <span class="insight-card-tag">{{ t('result.warningTag') }}</span>
             <h3>{{ directionResults[4].label }}</h3>
             <p>{{ analysisText.bottomMatch }}</p>
           </div>
@@ -1221,8 +1266,8 @@ body {
         <article class="insight-card insight-card--tip">
           <div class="insight-card-accent"></div>
           <div class="insight-card-body">
-            <span class="insight-card-tag">建议</span>
-            <h3>职业发展</h3>
+            <span class="insight-card-tag">{{ t('result.tipTag') }}</span>
+            <h3>{{ t('result.tipTitle') }}</h3>
             <p>{{ analysisText.general }}</p>
           </div>
         </article>
@@ -1230,28 +1275,24 @@ body {
 
       <!-- Heuristic Footer -->
       <div class="heuristic-footer">
-        <p>"测试不是定义你，<br>是帮你看见自己。<br>任何能力都可以练，<br>关键是知道往哪练。"</p>
+        <p>{{ t('result.footerQuote') }}</p>
       </div>
       </div>
 
       <div class="result-actions-bar">
         <div class="result-actions">
-          <button type="button" class="btn btn-primary" @click="restartTest">重新测试</button>
+          <button type="button" class="btn btn-primary" @click="restartTest">{{ t('result.restart') }}</button>
           <button type="button" class="btn btn-outline-primary" @click="generateResultImage" :disabled="savingImage">
-            {{ savingImage ? '生成中…' : '保存结果' }}
+            {{ savingImage ? t('result.saving') : t('result.save') }}
           </button>
         </div>
       </div>
 
       <!-- Disclaimer -->
       <div class="disclaimer">
-        <div class="disclaimer-title">📋 关于这份评估</div>
+        <div class="disclaimer-title">{{ t('disclaimer.title') }}</div>
         <ol>
-          <li>本测试基于 40 道自评题，得分反映的是你的自我认知和行为偏好，不是客观能力测量。</li>
-          <li>方向适配度由 7 个维度得分按加权矩阵计算得出，权重基于2026年各方向PM岗位的JD分析。</li>
-          <li>深度分析由规则模板生成，请将其视为职业思考的"起点"而非"终点"。</li>
-          <li>任何能力都可以通过刻意练习提升。如果结果不如预期，这恰恰说明你找到了成长的发力点。</li>
-          <li>本测试不会收集或上传你的个人数据。所有作答记录仅保存在你的浏览器本地存储中。</li>
+          <li v-for="(item, i) in t('disclaimer.items')" :key="i">{{ item }}</li>
         </ol>
       </div>
     </div>
@@ -1261,14 +1302,14 @@ body {
   <transition name="fade">
     <div class="modal-overlay" v-if="showSaveModal" @click.self="closeSaveModal">
       <div class="modal modal-save">
-        <h2>保存结果</h2>
+        <h2>{{ t('modal.saveTitle') }}</h2>
         <div class="save-preview-wrap" v-if="previewImageUrl">
           <img :src="previewImageUrl" alt="产品经理能力画像结果预览">
         </div>
-        <p v-else style="font-size:13px;color:var(--c-text-secondary);text-align:center;margin-bottom:16px;">图片生成失败，请重试</p>
+        <p v-else style="font-size:13px;color:var(--c-text-secondary);text-align:center;margin-bottom:16px;">{{ t('modal.saveFail') }}</p>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" @click="closeSaveModal">关闭</button>
-          <button type="button" class="btn btn-primary" @click="downloadResultImage" :disabled="!previewImageUrl">下载</button>
+          <button type="button" class="btn btn-secondary" @click="closeSaveModal">{{ t('modal.saveClose') }}</button>
+          <button type="button" class="btn btn-primary" @click="downloadResultImage" :disabled="!previewImageUrl">{{ t('modal.saveDownload') }}</button>
         </div>
       </div>
     </div>
@@ -1278,11 +1319,11 @@ body {
   <transition name="fade">
     <div class="modal-overlay" v-if="showContinueModal" @click.self="dismissContinue">
       <div class="modal">
-        <h2>发现未完成的测试</h2>
-        <p>你上次答到了第 {{ savedProgress }} 题，是否继续？</p>
+        <h2>{{ t('modal.resumeTitle') }}</h2>
+        <p>{{ t('modal.resumeBody').replace('{n}', savedProgress) }}</p>
         <div class="modal-actions">
-          <button class="btn btn-secondary" @click="dismissContinue">重新开始</button>
-          <button class="btn btn-primary" @click="continueTest">继续答题</button>
+          <button class="btn btn-secondary" @click="dismissContinue">{{ t('modal.resumeAgain') }}</button>
+          <button class="btn btn-primary" @click="continueTest">{{ t('modal.resumeContinue') }}</button>
         </div>
       </div>
     </div>
@@ -1327,285 +1368,525 @@ function bootApp() {
   var createApp = Vue.createApp;
 
 const QUESTIONS = [
-  { id:1, category:'scenario', text:'老板会上提新功能，研发说本季排期已满。你的第一反应是？', options:[
+  { id:1, category:'scenario', text:'老板会上提新功能，研发说本季排期已满。你的第一反应是？', text_en:'Your boss pitches a feature in a meeting. Engineering says this quarter is fully booked. What\'s your first instinct?', options:[
     {letter:'A', text:'先插队做老板需求，其余往后推'},
     {letter:'B', text:'先确认背景目标，确急再谈置换排期'},
     {letter:'C', text:'拒绝，告诉老板下期再排'},
     {letter:'D', text:'让研发加班，老板需求不能等'},
     {letter:'E', text:'先记下需求，做完手上再说'}
+  ], options_en:[
+    {letter:'A', text:'Jump the queue—do the boss\'s request first, push everything else back'},
+    {letter:'B', text:'Clarify the goal & urgency first; negotiate a swap only if truly urgent'},
+    {letter:'C', text:'Reject it—tell the boss it\'ll have to wait until next cycle'},
+    {letter:'D', text:'Ask engineering to work overtime; the boss\'s request can\'t wait'},
+    {letter:'E', text:'Note it down, finish current work first'}
   ], dims:{JUDGE:[5,'B'],COMM:[3,'B']}},
-  { id:2, category:'preference', text:'用到很别扭的产品时，你通常会？', options:[
+  { id:2, category:'preference', text:'用到很别扭的产品时，你通常会？', text_en:'When you encounter a really clunky product, you usually:', options:[
     {letter:'A', text:'抱怨两句就过去，反正不是我做的'},
     {letter:'B', text:'截图吐槽，然后该干嘛干嘛'},
     {letter:'C', text:'会想为何这样设计，我会怎么改'},
     {letter:'D', text:'直接卸载换同类产品'},
     {letter:'E', text:'去应用商店写差评'}
+  ], options_en:[
+    {letter:'A', text:'Complain briefly, then move on—not my problem'},
+    {letter:'B', text:'Screenshot it, vent about it, then go back to my day'},
+    {letter:'C', text:'Wonder why it was designed this way, and how I\'d improve it'},
+    {letter:'D', text:'Uninstall immediately and switch to a competitor'},
+    {letter:'E', text:'Leave a negative review in the app store'}
   ], dims:{EMPATHY:[5,'C'],TASTE:[4,'C']}},
-  { id:3, category:'tech', text:'同事说「这功能用AI肯定行」，你会？', options:[
+  { id:3, category:'tech', text:'同事说「这功能用AI肯定行」，你会？', text_en:'A colleague says "AI could definitely handle this feature." You:', options:[
     {letter:'A', text:'相信同事，AI现在啥都能做'},
     {letter:'B', text:'先问解决啥、不准后果、有无更简方案'},
     {letter:'C', text:'觉得AI太复杂，不如传统方法稳'},
     {letter:'D', text:'让同事先做个Demo试试'},
     {letter:'E', text:'去搜有没有类似产品已用AI解决'}
+  ], options_en:[
+    {letter:'A', text:'Trust the colleague—AI can do anything these days'},
+    {letter:'B', text:'Ask: what problem, what happens if wrong, is there a simpler approach?'},
+    {letter:'C', text:'Feel AI is overcomplicated; traditional methods are safer'},
+    {letter:'D', text:'Ask the colleague to prototype a quick demo first'},
+    {letter:'E', text:'Search for similar products that have already solved this with AI'}
   ], dims:{TECH:[5,'B'],JUDGE:[4,'B']}},
-  { id:4, category:'social', text:'评审会上研发说「这需求做不了」，但业务很重要。你会？', options:[
+  { id:4, category:'social', text:'评审会上研发说「这需求做不了」，但业务很重要。你会？', text_en:'In a review meeting, engineering says "this can\'t be built," but it\'s critical for the business. You:', options:[
     {letter:'A', text:'接受研发判断，做不了就算了'},
     {letter:'B', text:'会后单独聊清不可能还是成本高'},
     {letter:'C', text:'坚持要做，让研发技术上克服'},
     {letter:'D', text:'回去让业务方降低预期'},
     {letter:'E', text:'拉上研发leader一起调方案排期'}
+  ], options_en:[
+    {letter:'A', text:'Accept engineering\'s verdict—if it can\'t be done, so be it'},
+    {letter:'B', text:'Follow up one-on-one: is it truly impossible, or just expensive?'},
+    {letter:'C', text:'Insist on building it; tell engineering to figure out the tech'},
+    {letter:'D', text:'Go back and lower the business stakeholder\'s expectations'},
+    {letter:'E', text:'Pull in the engineering lead to jointly re-scope and re-schedule'}
   ], dims:{COMM:[5,'B'],JUDGE:[3,'B']}},
-  { id:5, category:'scenario', text:'设计电商退款流程，哪种思考最接近你？', options:[
+  { id:5, category:'scenario', text:'设计电商退款流程，哪种思考最接近你？', text_en:'When designing an e-commerce refund flow, which approach is closest to yours?', options:[
     {letter:'A', text:'画全流程图，标每步异常与规则'},
     {letter:'B', text:'参考淘宝京东，竞品流程直接套'},
     {letter:'C', text:'先问客服退款最常见痛点'},
     {letter:'D', text:'先做最简版，上线后快速迭代'},
     {letter:'E', text:'先写详尽需求，枚举所有边界'}
+  ], options_en:[
+    {letter:'A', text:'Map the full flow, annotate every exception and rule at each step'},
+    {letter:'B', text:'Copy what Taobao/JD does—just adapt a competitor\'s flow'},
+    {letter:'C', text:'First interview customer support about the most common refund pain points'},
+    {letter:'D', text:'Ship the simplest version first, iterate rapidly post-launch'},
+    {letter:'E', text:'Write exhaustive requirements, enumerating every edge case upfront'}
   ], dims:{LOGIC:[5,'A'],EMPATHY:[3,'C']}},
-  { id:6, category:'preference', text:'过去一年，你主动学新技能的频率是？', options:[
+  { id:6, category:'preference', text:'过去一年，你主动学新技能的频率是？', text_en:'Over the past year, how often have you proactively learned new skills?', options:[
     {letter:'A', text:'几乎没有，太忙没精力'},
     {letter:'B', text:'偶尔被逼着学，不主动'},
     {letter:'C', text:'感兴趣会学，热度过了就放下'},
     {letter:'D', text:'常主动学新工具，大多能坚持掌握'},
     {letter:'E', text:'每天都在学，不学就焦虑'}
+  ], options_en:[
+    {letter:'A', text:'Almost never—too busy, no energy'},
+    {letter:'B', text:'Occasionally, only when forced—not proactive'},
+    {letter:'C', text:'I dive in when something interests me, but drop it when excitement fades'},
+    {letter:'D', text:'I regularly pick up new tools and usually stick with them to mastery'},
+    {letter:'E', text:'I learn something every day—I get anxious if I don\'t'}
   ], dims:{GRIT:[5,'D'],TECH:[3,'D']}},
-  { id:7, category:'scenario', text:'竞品上了热议新功能，团队说「我们也做」。你会？', options:[
+  { id:7, category:'scenario', text:'竞品上了热议新功能，团队说「我们也做」。你会？', text_en:'A competitor launched a buzzy new feature. The team says "let\'s build it too." You:', options:[
     {letter:'A', text:'马上跟进，不然用户会流失'},
     {letter:'B', text:'先弄清用户需求与定位是否匹配'},
     {letter:'C', text:'不做，跟竞品没意思'},
     {letter:'D', text:'做比竞品更好的版本超越'},
     {letter:'E', text:'先灰度看用户反应再决定'}
+  ], options_en:[
+    {letter:'A', text:'Follow immediately—we\'ll lose users otherwise'},
+    {letter:'B', text:'First clarify user needs and whether it aligns with our positioning'},
+    {letter:'C', text:'Don\'t do it—copying competitors is pointless'},
+    {letter:'D', text:'Build a better version and out-execute them'},
+    {letter:'E', text:'A/B test a small cohort first, then decide based on data'}
   ], dims:{JUDGE:[5,'B'],TASTE:[3,'B'],EMPATHY:[2,'B']}},
-  { id:8, category:'social', text:'项目折腾两月终于上线，数据一般，老板说效果不理想。你会？', options:[
+  { id:8, category:'social', text:'项目折腾两月终于上线，数据一般，老板说效果不理想。你会？', text_en:'After two months of grind, your project goes live. Metrics are middling. Your boss says the results are disappointing. You:', options:[
     {letter:'A', text:'很委屈，不全是我一个人的问题'},
     {letter:'B', text:'先复盘原因，整理分析再汇报'},
     {letter:'C', text:'老板说得对，我下次努力'},
     {letter:'D', text:'有点麻木，起起伏伏正常'},
     {letter:'E', text:'怀疑自己不适合，想换方向'}
+  ], options_en:[
+    {letter:'A', text:'Feel unfairly blamed—it wasn\'t just my fault'},
+    {letter:'B', text:'Run a post-mortem first, organize findings, then report back'},
+    {letter:'C', text:'The boss is right; I\'ll try harder next time'},
+    {letter:'D', text:'Feel numb—ups and downs are normal'},
+    {letter:'E', text:'Start doubting myself and thinking about switching direction'}
   ], dims:{GRIT:[5,'B'],COMM:[3,'B'],JUDGE:[3,'B']}},
-  { id:9, category:'tech', text:'哪项最符合你对AI的真实理解程度？', options:[
+  { id:9, category:'tech', text:'哪项最符合你对AI的真实理解程度？', text_en:'Which best describes your actual understanding of AI?', options:[
     {letter:'A', text:'常用ChatGPT/豆包，不懂原理'},
     {letter:'B', text:'懂预测下一词、幻觉与Prompt影响'},
     {letter:'C', text:'懂Prompt与RAG，知何时微调'},
     {letter:'D', text:'懂Agent机制，能判断是否适用'},
     {letter:'E', text:'都不太符合，主要靠新闻了解'}
+  ], options_en:[
+    {letter:'A', text:'I use ChatGPT/Claude regularly but don\'t understand the principles'},
+    {letter:'B', text:'I understand next-token prediction, hallucinations, and how prompts affect output'},
+    {letter:'C', text:'I understand prompts, RAG, and know when fine-tuning makes sense'},
+    {letter:'D', text:'I understand agent architectures and can judge when AI is appropriate'},
+    {letter:'E', text:'None really fit—I mostly learn about AI through news headlines'}
   ], dims:{TECH:[5,'D'],LOGIC:[2,'D']}},
-  { id:10, category:'preference', text:'看到用户反馈「产品太难用」，你会？', options:[
+  { id:10, category:'preference', text:'看到用户反馈「产品太难用」，你会？', text_en:'You see user feedback saying "this product is too hard to use." You:', options:[
     {letter:'A', text:'觉得用户不会用，产品挺好'},
     {letter:'B', text:'找到用户，问清难点并看操作'},
     {letter:'C', text:'看有多少类似反馈，少数当个例'},
     {letter:'D', text:'自己走一遍流程找卡点'},
     {letter:'E', text:'转给产品/运营同事处理'}
+  ], options_en:[
+    {letter:'A', text:'Think the user just doesn\'t know how to use it—the product is fine'},
+    {letter:'B', text:'Reach out to the user, ask about their pain points, and watch them use it'},
+    {letter:'C', text:'Check how many similar complaints there are; treat isolated cases as anecdotes'},
+    {letter:'D', text:'Walk through the flow myself to find friction points'},
+    {letter:'E', text:'Forward it to the product/ops team to handle'}
   ], dims:{EMPATHY:[5,'B'],TASTE:[3,'B']}},
-  { id:11, category:'scenario', text:'新功能首周使用率不到预估两成，有人要等有人要下。你会？', options:[
+  { id:11, category:'scenario', text:'新功能首周使用率不到预估两成，有人要等有人要下。你会？', text_en:'A new feature\'s first-week usage is under 20% of projections. Some say wait, some say kill it. You:', options:[
     {letter:'A', text:'多等两周，等新功能冷启动'},
     {letter:'B', text:'分析是入口、流失还是不知晓'},
     {letter:'C', text:'立刻下线，方向肯定错了'},
     {letter:'D', text:'加大运营推送把数据拉起来'},
     {letter:'E', text:'找用户访谈后再判断'}
+  ], options_en:[
+    {letter:'A', text:'Wait a couple more weeks—new features need time for cold start'},
+    {letter:'B', text:'Diagnose: is it discoverability, drop-off, or awareness?'},
+    {letter:'C', text:'Kill it immediately—the direction must be wrong'},
+    {letter:'D', text:'Boost it with aggressive push notifications and marketing'},
+    {letter:'E', text:'Interview users first, then decide'}
   ], dims:{JUDGE:[5,'B'],LOGIC:[3,'B']}},
-  { id:12, category:'preference', text:'刷社交媒体/看资讯时，哪种最接近你？', options:[
+  { id:12, category:'preference', text:'刷社交媒体/看资讯时，哪种最接近你？', text_en:'When browsing social media or news, which best describes you?', options:[
     {letter:'A', text:'主要看娱乐，很少看行业内容'},
     {letter:'B', text:'看到行业文会点，但不刻意搜'},
     {letter:'C', text:'关注博主，定期看并收藏观点'},
     {letter:'D', text:'有RSS/信源体系，每天固定处理'},
     {letter:'E', text:'除工作外几乎不看，多是噪音'}
+  ], options_en:[
+    {letter:'A', text:'Mostly entertainment—I rarely read industry content'},
+    {letter:'B', text:'I\'ll click industry articles if I see them, but don\'t actively seek them out'},
+    {letter:'C', text:'I follow thought leaders, read and bookmark regularly'},
+    {letter:'D', text:'I have a RSS/info-source system and process it daily'},
+    {letter:'E', text:'I barely look outside work—most of it is noise'}
   ], dims:{GRIT:[4,'D'],TASTE:[3,'C']}},
-  { id:13, category:'tech', text:'AI客服要答「订单到哪了」，需查物流。哪种方案最合理？', options:[
+  { id:13, category:'tech', text:'AI客服要答「订单到哪了」，需查物流。哪种方案最合理？', text_en:'An AI customer service bot needs to answer "Where\'s my order?" and look up shipping. Which approach makes the most sense?', options:[
     {letter:'A', text:'物流文档喂RAG，从文档找答案'},
     {letter:'B', text:'函数调用物流API再生成回答'},
     {letter:'C', text:'订单全塞进Prompt让AI找'},
     {letter:'D', text:'不管物流，生成通用配送话术'},
     {letter:'E', text:'不清楚区别，交给技术决定'}
+  ], options_en:[
+    {letter:'A', text:'Feed logistics docs into RAG, let it find answers from documentation'},
+    {letter:'B', text:'Use function calling to query the logistics API, then generate the response'},
+    {letter:'C', text:'Stuff all orders into the prompt and let AI find the right one'},
+    {letter:'D', text:'Ignore actual logistics—generate a generic shipping status message'},
+    {letter:'E', text:'Not sure about the differences; leave it to engineering'}
   ], dims:{TECH:[5,'B'],JUDGE:[4,'B']}},
-  { id:14, category:'social', text:'评审会上设计负责人说交互不合理。你会？', options:[
+  { id:14, category:'social', text:'评审会上设计负责人说交互不合理。你会？', text_en:'In a design review, the design lead says the interaction is unreasonable. You:', options:[
     {letter:'A', text:'尴尬但听完，有理接受无理私聊'},
     {letter:'B', text:'立刻反驳，说有用户调研依据'},
     {letter:'C', text:'很挫败，觉得自己设计不行'},
     {letter:'D', text:'问哪里不合理，讨论怎么改'},
     {letter:'E', text:'会后找用户测两方案用数据说话'}
+  ], options_en:[
+    {letter:'A', text:'Feel awkward but listen; accept if valid, discuss privately if not'},
+    {letter:'B', text:'Push back immediately—I have user research to back it up'},
+    {letter:'C', text:'Feel crushed—maybe my design skills aren\'t good enough'},
+    {letter:'D', text:'Ask what\'s unreasonable and discuss how to improve it'},
+    {letter:'E', text:'Test both approaches with users afterwards and let data settle it'}
   ], dims:{COMM:[5,'D'],TASTE:[3,'D']}},
-  { id:15, category:'scenario', text:'访谈中有人要一键完成，有人要步步看清。你会？', options:[
+  { id:15, category:'scenario', text:'访谈中有人要一键完成，有人要步步看清。你会？', text_en:'In user interviews, some want one-click completion; others want step-by-step clarity. You:', options:[
     {letter:'A', text:'听多数人，哪个多按哪个'},
     {letter:'B', text:'关键步骤慢确认，非关键快完成'},
     {letter:'C', text:'优先安全感，听步步看清的'},
     {letter:'D', text:'优先效率，听一键完成的'},
     {letter:'E', text:'做快速/安全两种模式可选'}
+  ], options_en:[
+    {letter:'A', text:'Follow the majority—whichever has more votes wins'},
+    {letter:'B', text:'Slow confirmation for critical steps, fast completion for non-critical ones'},
+    {letter:'C', text:'Prioritize safety—go with the step-by-step users'},
+    {letter:'D', text:'Prioritize efficiency—go with the one-click users'},
+    {letter:'E', text:'Build two modes: fast and guided, let users choose'}
   ], dims:{EMPATHY:[5,'B'],JUDGE:[4,'B']}},
-  { id:16, category:'preference', text:'工作之外，你最喜欢做什么？', options:[
+  { id:16, category:'preference', text:'工作之外，你最喜欢做什么？', text_en:'Outside of work, what do you enjoy most?', options:[
     {letter:'A', text:'打游戏追剧刷短视频休息'},
     {letter:'B', text:'聚会聊天，和人连接充电'},
     {letter:'C', text:'看书学技能，喂饱好奇心'},
     {letter:'D', text:'运动徒步户外，重启大脑'},
     {letter:'E', text:'捣鼓副业小项目，创造快乐'}
+  ], options_en:[
+    {letter:'A', text:'Gaming, binge-watching shows, scrolling short videos—pure relaxation'},
+    {letter:'B', text:'Socializing, catching up with friends—I recharge through connection'},
+    {letter:'C', text:'Reading and learning new skills—feeding my curiosity'},
+    {letter:'D', text:'Exercise, hiking, outdoors—resetting my brain'},
+    {letter:'E', text:'Tinkering with side projects—I find joy in creating'}
   ], dims:{GRIT:[3,'C'],EMPATHY:[4,'B']}},
-  { id:17, category:'scenario', text:'内部看板：BI两天上线或自研两周，仅3人用。你选？', options:[
+  { id:17, category:'scenario', text:'内部看板：BI两天上线或自研两周，仅3人用。你选？', text_en:'Internal dashboard: BI tool delivers in 2 days, custom build takes 2 weeks. Only 3 users. You choose:', options:[
     {letter:'A', text:'先BI两天上线，验证后再说'},
     {letter:'B', text:'自研灵活度是长期竞争力'},
     {letter:'C', text:'先不做，需求更明确再说'},
     {letter:'D', text:'两方案并行，A先顶B同步'},
     {letter:'E', text:'问研发BI能否折中改造'}
+  ], options_en:[
+    {letter:'A', text:'BI tool in 2 days—validate first, decide later'},
+    {letter:'B', text:'Custom build—flexibility is a long-term competitive advantage'},
+    {letter:'C', text:'Hold off—wait until requirements are clearer'},
+    {letter:'D', text:'Run both in parallel: BI ships now, custom build in background'},
+    {letter:'E', text:'Ask engineering if we can customize the BI tool as a middle ground'}
   ], dims:{LOGIC:[5,'A'],TECH:[3,'A']}},
-  { id:18, category:'social', text:'推跨运营/研发/法务项目，三方都说忙或排不进。你会？', options:[
+  { id:18, category:'social', text:'推跨运营/研发/法务项目，三方都说忙或排不进。你会？', text_en:'You\'re driving a cross-functional project (ops, engineering, legal). All three say they\'re too busy. You:', options:[
     {letter:'A', text:'逐个聊清卡点，必要时找leader'},
     {letter:'B', text:'邮件抄送各方与leader定deadline'},
     {letter:'C', text:'先做不需配合的部分'},
     {letter:'D', text:'找自己老板出面推'},
     {letter:'E', text:'暂时搁置，等条件成熟'}
+  ], options_en:[
+    {letter:'A', text:'Talk to each one to understand blockers; escalate to leads if needed'},
+    {letter:'B', text:'Send an email CC\'ing all parties and their leads with a hard deadline'},
+    {letter:'C', text:'Start on the parts that don\'t require their input'},
+    {letter:'D', text:'Ask my own boss to push it forward'},
+    {letter:'E', text:'Pause it temporarily—wait for conditions to improve'}
   ], dims:{COMM:[5,'A'],GRIT:[2,'A']}},
-  { id:19, category:'tech', text:'AI写文案不符合品牌调性，哪种解决思路最接近你？', options:[
+  { id:19, category:'tech', text:'AI写文案不符合品牌调性，哪种解决思路最接近你？', text_en:'AI-generated copy doesn\'t match the brand tone. Which fix is closest to your thinking?', options:[
     {letter:'A', text:'加提示「仅供参考请人工审核」'},
     {letter:'B', text:'分析bad case写进Prompt并建评测集'},
     {letter:'C', text:'不做AI文案，改回人工'},
     {letter:'D', text:'换更强模型，能力上来就好'},
     {letter:'E', text:'让用户先选正式/轻松等调性'}
+  ], options_en:[
+    {letter:'A', text:'Add a disclaimer: "For reference only—please review manually"'},
+    {letter:'B', text:'Analyze bad cases, refine the prompt, and build an evaluation benchmark'},
+    {letter:'C', text:'Drop AI copywriting—go back to human writers'},
+    {letter:'D', text:'Switch to a more powerful model—better capability will fix it'},
+    {letter:'E', text:'Let users pre-select a tone: formal, casual, etc.'}
   ], dims:{TECH:[5,'B'],GRIT:[3,'B']}},
-  { id:20, category:'scenario', text:'本期无法交付全部规划功能，你的本能反应是？', options:[
+  { id:20, category:'scenario', text:'本期无法交付全部规划功能，你的本能反应是？', text_en:'You can\'t deliver all planned features this cycle. Your instinctive response:', options:[
     {letter:'A', text:'按重要紧急矩阵砍，保核心质量'},
     {letter:'B', text:'跟研发商量加人或加班全交付'},
     {letter:'C', text:'让业务方定优先级'},
     {letter:'D', text:'砍掉爽但用户价值小的功能'},
     {letter:'E', text:'每项都砍到最小可用版'}
+  ], options_en:[
+    {letter:'A', text:'Use an importance/urgency matrix to cut scope, protect core quality'},
+    {letter:'B', text:'Negotiate with engineering for more headcount or overtime to deliver all'},
+    {letter:'C', text:'Let the business stakeholders decide priorities'},
+    {letter:'D', text:'Cut features that feel nice but deliver low user value'},
+    {letter:'E', text:'Trim every item down to its minimum viable version'}
   ], dims:{JUDGE:[6,'A'],LOGIC:[4,'A']}},
-  { id:21, category:'preference', text:'做完一个项目或功能后，你通常会？', options:[
+  { id:21, category:'preference', text:'做完一个项目或功能后，你通常会？', text_en:'After finishing a project or feature, you usually:', options:[
     {letter:'A', text:'松口气赶紧下一个，不复盘'},
     {letter:'B', text:'心里过一遍得失，很少写下来'},
     {letter:'C', text:'写复盘文档并分享给团队'},
     {letter:'D', text:'主要复盘别人，自己没啥好复'},
     {letter:'E', text:'不想回头看，向前看更重要'}
+  ], options_en:[
+    {letter:'A', text:'Breathe a sigh of relief and jump to the next one—no retro'},
+    {letter:'B', text:'Mentally review wins and losses, but rarely write it down'},
+    {letter:'C', text:'Write a post-mortem doc and share it with the team'},
+    {letter:'D', text:'Mostly retro other people\'s work—nothing much to reflect on myself'},
+    {letter:'E', text:'Don\'t want to look back—forward is more important'}
   ], dims:{GRIT:[4,'C'],LOGIC:[3,'C']}},
-  { id:22, category:'scenario', text:'下班前支付状态bug影响0.1%用户，修要4小时；新功能测试未确认。你会？', options:[
+  { id:22, category:'scenario', text:'下班前支付状态bug影响0.1%用户，修要4小时；新功能测试未确认。你会？', text_en:'End of day: a payment status bug affects 0.1% of users, fix takes 4hrs. New feature QA is unconfirmed. You:', options:[
     {letter:'A', text:'先修bug，支付问题恐慌大于损失'},
     {letter:'B', text:'按原计划上线新功能，bug用FAQ安抚'},
     {letter:'C', text:'研发修bug，我确认新功能测试'},
     {letter:'D', text:'发公告说状态延迟，先推新功能'},
     {letter:'E', text:'问客服投诉多吗，不多先不管'}
+  ], options_en:[
+    {letter:'A', text:'Fix the bug first—payment issues cause panic beyond the monetary loss'},
+    {letter:'B', text:'Launch the new feature as planned; handle the bug with a FAQ page'},
+    {letter:'C', text:'Engineering fixes the bug while I finish QA on the new feature'},
+    {letter:'D', text:'Post an announcement about status delays; push the new feature first'},
+    {letter:'E', text:'Check with support: if complaints are low, deprioritize it'}
   ], dims:{JUDGE:[5,'A'],COMM:[2,'A']}},
-  { id:23, category:'social', text:'leader方向很坚持，你直觉有问题且数据部分支持。你会？', options:[
+  { id:23, category:'social', text:'leader方向很坚持，你直觉有问题且数据部分支持。你会？', text_en:'Your lead is adamant about a direction. Your gut says it\'s problematic & data partially backs you. You:', options:[
     {letter:'A', text:'听leader的，他经验更丰富'},
     {letter:'B', text:'先做最小版用真实数据说话'},
     {letter:'C', text:'整理分析文档约leader单独聊'},
     {letter:'D', text:'私下吐槽，会上照他说的做'},
     {letter:'E', text:'会上直接提出不同意见'}
+  ], options_en:[
+    {letter:'A', text:'Follow the lead—they have more experience'},
+    {letter:'B', text:'Build a min-viable version first and let real data speak'},
+    {letter:'C', text:'Prepare an analysis doc and schedule a 1:1 with the lead'},
+    {letter:'D', text:'Vent privately but do what the lead says in meetings'},
+    {letter:'E', text:'Voice my disagreement openly in the meeting'}
   ], dims:{COMM:[4,'C'],JUDGE:[4,'C']}},
-  { id:24, category:'tech', text:'想了解一项新AI技术时，你通常会？', options:[
+  { id:24, category:'tech', text:'想了解一项新AI技术时，你通常会？', text_en:'When you want to understand a new AI technology, you usually:', options:[
     {letter:'A', text:'看几篇公众号了解概念就够'},
     {letter:'B', text:'看文章视频，感兴趣就注册试试'},
     {letter:'C', text:'自己试并想能否解决工作问题做Demo'},
     {letter:'D', text:'除非工作要求，不主动研究'},
     {letter:'E', text:'工作中已深度用AI工具持续关注'}
+  ], options_en:[
+    {letter:'A', text:'Read a few blog posts to grasp the concept—that\'s enough'},
+    {letter:'B', text:'Watch videos & read articles; sign up and try it if interested'},
+    {letter:'C', text:'Try it hands-on and think about whether it can solve a real work problem—build a demo'},
+    {letter:'D', text:'Unless work requires it, I don\'t proactively research'},
+    {letter:'E', text:'I\'m already deeply using AI tools at work and continuously tracking the space'}
   ], dims:{TECH:[5,'C'],GRIT:[4,'C']}},
-  { id:25, category:'scenario', text:'自认刚需的功能上线两周，仅零星使用。你首先会？', options:[
+  { id:25, category:'scenario', text:'自认刚需的功能上线两周，仅零星使用。你首先会？', text_en:'A feature you were sure was essential went live two weeks ago—barely any usage. Your first move:', options:[
     {letter:'A', text:'再等等，好功能需时间被发现'},
     {letter:'B', text:'用数据看入口、点击、完成断点'},
     {letter:'C', text:'怀疑需求不存在，考虑下线'},
     {letter:'D', text:'加大引导弹窗红点让用户注意'},
     {letter:'E', text:'找用户当面操作，只观察不说'}
+  ], options_en:[
+    {letter:'A', text:'Wait a bit longer—good features take time to be discovered'},
+    {letter:'B', text:'Check data: entry points, clicks, and completion drop-off'},
+    {letter:'C', text:'Doubt the need is real; consider killing the feature'},
+    {letter:'D', text:'Add more onboarding tooltips and red badges to draw attention'},
+    {letter:'E', text:'Watch real users interact with it in person—observe, don\'t interrupt'}
   ], dims:{EMPATHY:[5,'B'],JUDGE:[4,'B']}},
-  { id:26, category:'preference', text:'哪种说法最接近你对数据的态度？', options:[
+  { id:26, category:'preference', text:'哪种说法最接近你对数据的态度？', text_en:'Which statement best matches your attitude toward data?', options:[
     {letter:'A', text:'信数据，数据说什么就是什么'},
     {letter:'B', text:'数据重要但会骗人，结合直觉判断'},
     {letter:'C', text:'不擅分析，依赖分析师结论'},
     {letter:'D', text:'数据用来证明自己是对的'},
     {letter:'E', text:'数据常不够准，更信访谈观察'}
+  ], options_en:[
+    {letter:'A', text:'I trust data—whatever the numbers say, that\'s the truth'},
+    {letter:'B', text:'Data is important but can lie; I combine it with intuition'},
+    {letter:'C', text:'I\'m not great at analysis; I rely on analysts\' conclusions'},
+    {letter:'D', text:'Data is mainly useful to prove I\'m right'},
+    {letter:'E', text:'Data is often unreliable; I trust interviews and observation more'}
   ], dims:{LOGIC:[4,'B'],JUDGE:[3,'B']}},
-  { id:27, category:'scenario', text:'内部BI平台：运营要大屏、研发要API、leader要提速，资源只够一个。你会？', options:[
+  { id:27, category:'scenario', text:'内部BI平台：运营要大屏、研发要API、leader要提速，资源只够一个。你会？', text_en:'Internal BI platform: ops wants dashboards, engineering wants APIs, your lead wants speed. Resources for only one. You:', options:[
     {letter:'A', text:'先做leader要求的报表提速'},
     {letter:'B', text:'先做运营大屏，老板易感知'},
     {letter:'C', text:'先做研发API，长期价值大'},
     {letter:'D', text:'三件事各做一点，都不能做完'},
     {letter:'E', text:'分别确认三方紧急度与真实价值'}
+  ], options_en:[
+    {letter:'A', text:'Start with the reporting speed-up the lead asked for'},
+    {letter:'B', text:'Build the ops dashboard first—executives will notice it'},
+    {letter:'C', text:'Build the engineering API first—highest long-term value'},
+    {letter:'D', text:'Do a little bit of all three, even if nothing gets fully finished'},
+    {letter:'E', text:'Check urgency and true value with each party separately'}
   ], dims:{COMM:[4,'E'],JUDGE:[4,'E'],LOGIC:[3,'E']}},
-  { id:28, category:'social', text:'合作者最可能用哪个词形容你？', options:[
+  { id:28, category:'social', text:'合作者最可能用哪个词形容你？', text_en:'Which word would collaborators most likely use to describe you?', options:[
     {letter:'A', text:'靠谱，交给我的事会搞定'},
     {letter:'B', text:'聪明，总能想到别人没想到的'},
     {letter:'C', text:'好沟通，合作不累有事说事'},
     {letter:'D', text:'有主见，不容易被带跑'},
     {letter:'E', text:'不确定，每个人评价不一样'}
+  ], options_en:[
+    {letter:'A', text:'Reliable—if it\'s on my plate, it gets done'},
+    {letter:'B', text:'Smart—I often think of things others miss'},
+    {letter:'C', text:'Easy to work with—collaboration is smooth and direct'},
+    {letter:'D', text:'Opinionated—I don\'t get swayed easily'},
+    {letter:'E', text:'Not sure—depends on who you ask'}
   ], dims:{COMM:[4,'C'],GRIT:[2,'A']}},
-  { id:29, category:'tech', text:'AI会议纪要功能，你如何判断好不好？', options:[
+  { id:29, category:'tech', text:'AI会议纪要功能，你如何判断好不好？', text_en:'For an AI meeting notes feature, how do you judge whether it\'s good?', options:[
     {letter:'A', text:'自己用几次感觉好就行'},
     {letter:'B', text:'定遗漏率等指标用真会测试'},
     {letter:'C', text:'看用户是否复制或重写纪要'},
     {letter:'D', text:'问卷或访谈问用户满意度'},
     {letter:'E', text:'不太会系统评估，看有无投诉'}
+  ], options_en:[
+    {letter:'A', text:'Use it a few times myself—if it feels good, it is good'},
+    {letter:'B', text:'Define metrics like omission rate and test with real meetings'},
+    {letter:'C', text:'Check if users copy-paste or rewrite the generated notes'},
+    {letter:'D', text:'Survey or interview users about satisfaction'},
+    {letter:'E', text:'Not sure how to evaluate systematically—check for complaints'}
   ], dims:{TECH:[5,'B'],JUDGE:[3,'B']}},
-  { id:30, category:'scenario', text:'产品同时服务政府与个人，政府要合规、个人嫌繁琐。你会？', options:[
+  { id:30, category:'scenario', text:'产品同时服务政府与个人，政府要合规、个人嫌繁琐。你会？', text_en:'Product serves both government and individual users. Government wants compliance; individuals find it tedious. You:', options:[
     {letter:'A', text:'两套体验，政府合规个人简化'},
     {letter:'B', text:'先满足合规，再在框架下优化体验'},
     {letter:'C', text:'先做个人体验，合规后端满足'},
     {letter:'D', text:'合规法务定，我执行即可'},
     {letter:'E', text:'参考竞品怎么处理'}
+  ], options_en:[
+    {letter:'A', text:'Two separate experiences: compliance for government, simplified for individuals'},
+    {letter:'B', text:'Satisfy compliance requirements first, then optimize UX within that framework'},
+    {letter:'C', text:'Prioritize individual UX first; handle compliance on the backend'},
+    {letter:'D', text:'Let legal decide the compliance rules—I just implement'},
+    {letter:'E', text:'Check how competitors handle this'}
   ], dims:{JUDGE:[5,'B'],LOGIC:[3,'B']}},
-  { id:31, category:'preference', text:'和朋友/同事因观点激烈分歧时，你通常会？', options:[
+  { id:31, category:'preference', text:'和朋友/同事因观点激烈分歧时，你通常会？', text_en:'When you have a heated disagreement with a friend or colleague, you usually:', options:[
     {letter:'A', text:'尽量说服，把道理讲清楚'},
     {letter:'B', text:'听完再找共同点表达我的角度'},
     {letter:'C', text:'聊不下去就换话题维护关系'},
     {letter:'D', text:'表面不争，回去查资料验证'},
     {letter:'E', text:'很开心辩论，争论是学习捷径'}
+  ], options_en:[
+    {letter:'A', text:'Try my best to persuade them—lay out the logic clearly'},
+    {letter:'B', text:'Listen fully first, then find common ground while sharing my perspective'},
+    {letter:'C', text:'Change the subject when it gets too heated—preserve the relationship'},
+    {letter:'D', text:'Don\'t argue outwardly; go back and research to verify my position'},
+    {letter:'E', text:'Enjoy the debate—I see argument as a shortcut to learning'}
   ], dims:{GRIT:[3,'E'],COMM:[3,'B']}},
-  { id:32, category:'scenario', text:'内部IM要加审批流：财务要定制，研发要抽象通用。你怎么做？', options:[
+  { id:32, category:'scenario', text:'内部IM要加审批流：财务要定制，研发要抽象通用。你怎么做？', text_en:'Internal IM needs approval workflows: finance wants custom, engineering wants a generic abstraction. You:', options:[
     {letter:'A', text:'理解差异，抽象通用模型+可配置'},
     {letter:'B', text:'支持财务，业务部门要啥做啥'},
     {letter:'C', text:'两版本并行，定制先上通用后做'},
     {letter:'D', text:'找更高层leader拍板策略'},
     {letter:'E', text:'先不做，分歧太大等一等'}
+  ], options_en:[
+    {letter:'A', text:'Understand the differences; design a generic model with configurable options'},
+    {letter:'B', text:'Just build what finance wants—the business unit knows best'},
+    {letter:'C', text:'Run both in parallel: custom first, then generic later'},
+    {letter:'D', text:'Escalate to a higher-level leader to decide the strategy'},
+    {letter:'E', text:'Pause—the disagreement is too significant'}
   ], dims:{LOGIC:[6,'A'],JUDGE:[4,'A']}},
-  { id:33, category:'social', text:'跨团队项目中与同事方案根本分歧，deadline临近。你会？', options:[
+  { id:33, category:'social', text:'跨团队项目中与同事方案根本分歧，deadline临近。你会？', text_en:'In a cross-team project, you fundamentally disagree with a colleague on the approach. A deadline is looming. You:', options:[
     {letter:'A', text:'让双方leader介入决策'},
     {letter:'B', text:'对齐成功标准，理解对方担忧'},
     {letter:'C', text:'坚持自己方案更有依据'},
     {letter:'D', text:'列表对比成本风险收益时间'},
     {letter:'E', text:'折中出一版先交付再说'}
+  ], options_en:[
+    {letter:'A', text:'Have both leads step in to decide'},
+    {letter:'B', text:'Align on success criteria first; understand their concerns'},
+    {letter:'C', text:'Stand my ground—my approach has stronger evidence'},
+    {letter:'D', text:'Create a comparison table: cost, risk, benefit, timeline'},
+    {letter:'E', text:'Find a compromise that ships something—worry about the rest later'}
   ], dims:{COMM:[5,'B'],GRIT:[3,'B']}},
-  { id:34, category:'tech', text:'Vibe Coding是用AI描述快速做原型，哪种最接近你的态度？', options:[
+  { id:34, category:'tech', text:'Vibe Coding是用AI描述快速做原型，哪种最接近你的态度？', text_en:'"Vibe Coding" means using AI to describe and quickly prototype. Which is closest to your attitude?', options:[
     {letter:'A', text:'没用过也不想用，交给工程师'},
     {letter:'B', text:'听说过没试过，感觉要懂代码'},
     {letter:'C', text:'用Cursor等做过小东西，很新鲜'},
     {letter:'D', text:'工作中用来做原型，比写文档高效'},
     {letter:'E', text:'自己用还推动团队建规范模板'}
+  ], options_en:[
+    {letter:'A', text:'Never tried and don\'t want to—leave coding to engineers'},
+    {letter:'B', text:'Heard about it but haven\'t tried; feels like you need coding skills'},
+    {letter:'C', text:'Built small things with Cursor etc.—feels refreshing'},
+    {letter:'D', text:'Use it at work for prototyping—faster than writing specs'},
+    {letter:'E', text:'Not only use it myself but push the team to establish templates and standards'}
   ], dims:{TECH:[5,'D'],GRIT:[4,'D']}},
-  { id:35, category:'scenario', text:'80%用户说要XX功能，但类似YY功能数据很差。你倾向？', options:[
+  { id:35, category:'scenario', text:'80%用户说要XX功能，但类似YY功能数据很差。你倾向？', text_en:'80% of users say they want feature X, but similar feature Y has terrible usage data. You lean toward:', options:[
     {letter:'A', text:'信用户，YY可能只是没做好'},
     {letter:'B', text:'信数据，行为比语言诚实'},
     {letter:'C', text:'先弄清YY没人用是真需求还是体验差'},
     {letter:'D', text:'做更好XX最小成本试错'},
     {letter:'E', text:'继续访谈深挖真正需要什么'}
+  ], options_en:[
+    {letter:'A', text:'Trust users—Y might have just been poorly executed'},
+    {letter:'B', text:'Trust data—behavior speaks louder than words'},
+    {letter:'C', text:'First figure out whether Y failed due to no real need or bad UX'},
+    {letter:'D', text:'Build a better X with minimal cost as a quick experiment'},
+    {letter:'E', text:'Keep interviewing to dig into what they truly need'}
   ], dims:{EMPATHY:[5,'E'],JUDGE:[4,'C']}},
-  { id:36, category:'preference', text:'面对海量AI动态、报告、竞品信息，你会？', options:[
+  { id:36, category:'preference', text:'面对海量AI动态、报告、竞品信息，你会？', text_en:'Facing the flood of AI news, reports, and competitor info, you:', options:[
     {letter:'A', text:'焦虑但忍不住一直刷'},
     {letter:'B', text:'只看与当前项目相关的'},
     {letter:'C', text:'有过滤体系，重要源定期看'},
     {letter:'D', text:'收藏一堆但从不打开'},
     {letter:'E', text:'不太关注，专注手上事'}
+  ], options_en:[
+    {letter:'A', text:'Feel anxious but can\'t stop refreshing'},
+    {letter:'B', text:'Only follow what\'s relevant to my current project'},
+    {letter:'C', text:'Have a filtering system—regularly check key sources'},
+    {letter:'D', text:'Bookmark tons of stuff but never actually read it'},
+    {letter:'E', text:'Don\'t follow closely—I focus on what\'s in front of me'}
   ], dims:{GRIT:[3,'C'],LOGIC:[3,'C']}},
-  { id:37, category:'scenario', text:'政府客户要加「领导驾驶舱」大屏演示，本质是面子工程。你会？', options:[
+  { id:37, category:'scenario', text:'政府客户要加「领导驾驶舱」大屏演示，本质是面子工程。你会？', text_en:'A government client wants a "leadership cockpit" dashboard—basically a vanity project. You:', options:[
     {letter:'A', text:'客户要啥做啥，采购要满意'},
     {letter:'B', text:'沟通领导真正关注点，或用现有数据展示'},
     {letter:'C', text:'拒绝，时间应花在真价值需求'},
     {letter:'D', text:'做简化版，标明定制另计维护费'},
     {letter:'E', text:'交给销售售前去沟通'}
+  ], options_en:[
+    {letter:'A', text:'Build whatever the client wants—keep procurement happy'},
+    {letter:'B', text:'Talk to the leadership about what they truly care about; use existing data to show it'},
+    {letter:'C', text:'Refuse—time should be spent on genuinely valuable needs'},
+    {letter:'D', text:'Build a simplified version; explicitly note customization and future maintenance costs'},
+    {letter:'E', text:'Hand it off to sales/solutions to negotiate'}
   ], dims:{COMM:[5,'B'],JUDGE:[3,'B']}},
-  { id:38, category:'social', text:'重要决策方向与你判断不一致，你不是核心决策者。你会？', options:[
+  { id:38, category:'social', text:'重要决策方向与你判断不一致，你不是核心决策者。你会？', text_en:'A key decision goes against your judgment. You\'re not the primary decision-maker. You:', options:[
     {letter:'A', text:'保持沉默，说多反而不好'},
     {letter:'B', text:'私下跟决策者说顾虑，仅供参考'},
     {letter:'C', text:'会上提出不同意见留另一种视角'},
     {letter:'D', text:'默默接受，团队一致更重要'},
     {letter:'E', text:'先不说，等执行后自然验证'}
+  ], options_en:[
+    {letter:'A', text:'Stay silent—saying more might backfire'},
+    {letter:'B', text:'Privately share concerns with the decision-maker, for reference only'},
+    {letter:'C', text:'Voice a different perspective in the meeting—at least put it on record'},
+    {letter:'D', text:'Accept it quietly—team alignment is more important'},
+    {letter:'E', text:'Stay quiet for now; let execution results speak for themselves'}
   ], dims:{COMM:[4,'B'],GRIT:[3,'B']}},
-  { id:39, category:'tech', text:'AI助手收到敏感问题（如是否该分手），你最认同？', options:[
+  { id:39, category:'tech', text:'AI助手收到敏感问题（如是否该分手），你最认同？', text_en:'An AI assistant receives a sensitive question (e.g. "Should I break up?"). You most agree with:', options:[
     {letter:'A', text:'AI应尽力回答，用户需要帮助'},
     {letter:'B', text:'中立安全回复，引导找专业人士'},
     {letter:'C', text:'统一回复无法回答敏感问题'},
     {letter:'D', text:'按产品定位决定可否委婉回应'},
     {letter:'E', text:'先看竞品怎么处理'}
+  ], options_en:[
+    {letter:'A', text:'AI should try its best to answer—users need help'},
+    {letter:'B', text:'Respond neutrally and safely; guide them to a professional'},
+    {letter:'C', text:'Uniformly reply that sensitive questions can\'t be answered'},
+    {letter:'D', text:'Decide based on product positioning whether a tactful response is appropriate'},
+    {letter:'E', text:'First check how competitors handle this'}
   ], dims:{TECH:[4,'D'],JUDGE:[4,'D']}},
-  { id:40, category:'preference', text:'一句话总结你对产品经理岗位的感觉？', options:[
+  { id:40, category:'preference', text:'一句话总结你对产品经理岗位的感觉？', text_en:'In one sentence: how do you feel about the product management role?', options:[
     {letter:'A', text:'兴奋，渴望解决复杂问题创造价值'},
     {letter:'B', text:'有兴趣但不确定是否如想象'},
     {letter:'C', text:'主要看薪资前景，热爱不确定'},
     {letter:'D', text:'曾觉得适合，AI变化让我动摇'},
     {letter:'E', text:'做测试看适不适合，不行换方向'}
+  ], options_en:[
+    {letter:'A', text:'Excited—I crave solving complex problems and creating value'},
+    {letter:'B', text:'Interested, but not sure if it\'s what I imagine'},
+    {letter:'C', text:'Mostly about salary and prospects—not sure about passion'},
+    {letter:'D', text:'Used to feel like a good fit, but AI disruption makes me uncertain'},
+    {letter:'E', text:'Taking this test to see if I fit; if not, I\'ll pivot'}
   ], dims:{GRIT:[3,'A'],EMPATHY:[3,'A']}}
 ];
 
@@ -1623,14 +1904,158 @@ const DIMENSION_NAMES = {
   TASTE: '产品审美力', TECH: '技术理解力', COMM: '沟通推动力', GRIT: '心力续航力'
 };
 
+const DIMENSION_NAMES_EN = {
+  JUDGE: 'Judgment', LOGIC: 'Systems Thinking', EMPATHY: 'User Empathy',
+  TASTE: 'Product Taste', TECH: 'Tech Fluency', COMM: 'Communication', GRIT: 'Grit'
+};
+
 const DIRECTION_NAMES = {
   toC: 'toC（面向个人用户）', toB: 'toB（面向企业客户）',
   'AI PM': 'AI PM（AI产品方向）', toM: 'toM（中台/内部平台）', toG: 'toG（政府/公共事业）'
 };
 
+const DIRECTION_NAMES_EN = {
+  toC: 'toC (Consumer)', toB: 'toB (Enterprise)',
+  'AI PM': 'AI PM (AI Products)', toM: 'toM (Platform/Internal)', toG: 'toG (Government)'
+};
+
+const T = {
+  zh: {
+    pageTitle: '测测你有多适合当产品经理（2026版）',
+    welcome: {
+      navTitle: '产品经理适配度测评 2026',
+      title1: '测测你有多适合',
+      title2: '当产品经理',
+      sub: '不是二分法的「是/否」，而是揭示你的能力光谱与方向适配度。',
+      hint: '基于2026年产品经理核心能力调研',
+      items: '道情景题',
+      mins: '分钟完成',
+      dims: '维',
+      dimsLabel: '能力评估',
+      dirs: '向',
+      dirsLabel: '方向适配',
+      startBtn: '开始测评',
+      langBtn: 'English'
+    },
+    quiz: {
+      prev: '上一题',
+      next: '下一题'
+    },
+    result: {
+      badge: '2026 · PM 测评',
+      title: '测评完成',
+      sub: '你的产品经理能力画像',
+      bestFit: '最佳适配',
+      radar: '能力雷达',
+      dims: '能力维度',
+      top: '最高',
+      direction: '方向适配度',
+      bestMatch: '最佳匹配',
+      insights: '深度分析',
+      bestFitTag: '最匹配',
+      warningTag: '需关注',
+      tipTag: '建议',
+      tipTitle: '职业发展',
+      footerQuote: '"测试不是定义你，\n是帮你看见自己。\n任何能力都可以练，\n关键是知道往哪练。"',
+      restart: '重新测试',
+      save: '保存结果',
+      saving: '生成中…',
+      imageFail: '截图组件未加载，请刷新页面后重试',
+      exportFail: '生成图片失败，请确认通过网页服务器访问（非直接打开文件）后重试',
+      downloadFn: '产品经理能力画像'
+    },
+    modal: {
+      resumeTitle: '发现未完成的测试',
+      resumeBody: '你上次答到了第 {n} 题，是否继续？',
+      resumeAgain: '重新开始',
+      resumeContinue: '继续答题',
+      saveTitle: '保存结果',
+      saveFail: '图片生成失败，请重试',
+      saveClose: '关闭',
+      saveDownload: '下载'
+    },
+    disclaimer: {
+      title: '关于这份评估',
+      items: [
+        '本测试基于 40 道自评题，得分反映的是你的自我认知和行为偏好，不是客观能力测量。',
+        '方向适配度由 7 个维度得分按加权矩阵计算得出，权重基于2026年各方向PM岗位的JD分析。',
+        '深度分析由规则模板生成，请将其视为职业思考的"起点"而非"终点"。',
+        '任何能力都可以通过刻意练习提升。如果结果不如预期，这恰恰说明你找到了成长的发力点。',
+        '本测试不会收集或上传你的个人数据。所有作答记录仅保存在你的浏览器本地存储中。'
+      ]
+    }
+  },
+  en: {
+    pageTitle: 'How Suited Are You for Product Management? (2026 Edition)',
+    welcome: {
+      navTitle: 'PM Aptitude Assessment 2026',
+      title1: 'How Suited Are You',
+      title2: 'for Product Management?',
+      sub: 'Not a yes-or-no verdict — reveal your ability spectrum and directional fit.',
+      hint: 'Based on 2026 PM core competency research',
+      items: 'scenario questions',
+      mins: 'minutes',
+      dims: 'dimensions',
+      dimsLabel: 'ability dimensions',
+      dirs: 'directions',
+      dirsLabel: 'directional fit',
+      startBtn: 'Start Assessment',
+      langBtn: '中文'
+    },
+    quiz: {
+      prev: 'Previous',
+      next: 'Next'
+    },
+    result: {
+      badge: '2026 · PM Assessment',
+      title: 'Assessment Complete',
+      sub: 'Your PM Competency Profile',
+      bestFit: 'Best Fit',
+      radar: 'Ability Radar',
+      dims: 'Ability Dimensions',
+      top: 'Top',
+      direction: 'Directional Fit',
+      bestMatch: 'Best Match',
+      insights: 'Deep Analysis',
+      bestFitTag: 'Best Fit',
+      warningTag: 'Needs Attention',
+      tipTag: 'Advice',
+      tipTitle: 'Career Development',
+      footerQuote: '"Tests don\'t define you,\nthey help you see yourself.\nEvery ability can be trained—\nthe key is knowing where to grow."',
+      restart: 'Retake Test',
+      save: 'Save Result',
+      saving: 'Generating…',
+      imageFail: 'Screenshot component not loaded. Please refresh and try again.',
+      exportFail: 'Image generation failed. Please access via web server (not a local file) and retry.',
+      downloadFn: 'PM_Aptitude_Profile'
+    },
+    modal: {
+      resumeTitle: 'Unfinished Test Found',
+      resumeBody: 'You were on question {n} last time. Continue?',
+      resumeAgain: 'Start Over',
+      resumeContinue: 'Continue',
+      saveTitle: 'Save Result',
+      saveFail: 'Image generation failed. Please retry.',
+      saveClose: 'Close',
+      saveDownload: 'Download'
+    },
+    disclaimer: {
+      title: 'About This Assessment',
+      items: [
+        'This test is based on 40 self-assessment questions. Scores reflect your self-perception and behavioral preferences, not objective ability measurement.',
+        'Directional fit is calculated from 7 dimension scores using a weighted matrix based on 2026 PM job description analysis.',
+        'Deep analysis is generated by rule-based templates. Treat it as a "starting point" for career reflection, not a "final answer."',
+        'Every ability can be improved through deliberate practice. If results are below expectations, you\'ve just found your growth leverage point.',
+        'This test does not collect or upload your personal data. All responses are stored only in your browser\'s local storage.'
+      ]
+    }
+  }
+};
+
 const STORAGE_KEY = 'pm-test-answers';
 const STORAGE_PROGRESS_KEY = 'pm-test-progress';
 const STORAGE_ORDER_KEY = 'pm-test-order';
+const STORAGE_LANG_KEY = 'pm-test-lang';
 const LOGO_URL = 'docs/dollVerse_logo.png';
 
 function shuffleArray(arr) {
@@ -1648,6 +2073,7 @@ createApp({
   data() {
     return {
       appState: 'welcome', // welcome | quiz | result
+      lang: 'zh', // zh | en
       currentQ: 0,
       questionOrder: [],
       selectedAnswers: {},
@@ -1672,10 +2098,18 @@ createApp({
     currentQuestion() {
       return this.questions[this.currentQ] || QUESTIONS[0];
     },
+    currentQuestionText() {
+      return this.lang === 'en' && this.currentQuestion.text_en ? this.currentQuestion.text_en : this.currentQuestion.text;
+    },
+    currentQuestionOptions() {
+      return this.lang === 'en' && this.currentQuestion.options_en ? this.currentQuestion.options_en : this.currentQuestion.options;
+    },
     answeredCount() { return Object.keys(this.selectedAnswers).length; },
     progressPct() { return (this.answeredCount / QUESTIONS.length) * 100; },
     categoryLabels() {
-      return { scenario:'情景判断', preference:'偏好与习惯', tech:'技术认知', social:'人际互动' };
+      return this.lang === 'zh'
+        ? { scenario:'情景判断', preference:'偏好与习惯', tech:'技术认知', social:'人际互动' }
+        : { scenario:'Scenario', preference:'Preference & Habit', tech:'Tech Awareness', social:'Social Dynamics' };
     },
 
     // Calculate raw dimension scores (0-100)
@@ -1708,12 +2142,13 @@ createApp({
       const dims = ['JUDGE','LOGIC','EMPATHY','TASTE','TECH','COMM','GRIT'];
       const maxScore = Math.max(...dims.map(d => scores[d]));
       return dims.map(key => ({
-        key, label: DIMENSION_NAMES[key], score: scores[key], isTop: scores[key] === maxScore
+        key, label: this.lang === 'zh' ? DIMENSION_NAMES[key] : DIMENSION_NAMES_EN[key], score: scores[key], isTop: scores[key] === maxScore
       }));
     },
 
     directionResults() {
       const scores = this.dimensionScores;
+      const names = this.lang === 'zh' ? DIRECTION_NAMES : DIRECTION_NAMES_EN;
       const results = [];
       Object.entries(WEIGHT_MATRIX).forEach(([dir, weights]) => {
         let total = 0, wSum = 0;
@@ -1722,7 +2157,7 @@ createApp({
           wSum += w;
         });
         const pct = wSum > 0 ? Math.round(total / wSum) : 50;
-        results.push({ key: dir, label: DIRECTION_NAMES[dir], pct });
+        results.push({ key: dir, label: names[dir], pct });
       });
       results.sort((a, b) => b.pct - a.pct);
       return results.map((r, i) => ({
@@ -1748,73 +2183,132 @@ createApp({
     }
   },
   methods: {
+    t(key) {
+      var keys = key.split('.');
+      var val = T[this.lang];
+      for (var i = 0; i < keys.length; i++) {
+        if (val == null) return key;
+        val = val[keys[i]];
+      }
+      return val != null ? val : key;
+    },
+
+    applyPageLang() {
+      document.title = this.t('pageTitle');
+      document.documentElement.lang = this.lang === 'zh' ? 'zh-CN' : 'en';
+    },
+
+    toggleLang() {
+      this.lang = this.lang === 'zh' ? 'en' : 'zh';
+      try { localStorage.setItem(STORAGE_LANG_KEY, this.lang); } catch(e) {}
+      this.applyPageLang();
+      if (this.appState === 'result' && this.radarChart) {
+        this.$nextTick(function() { this.initRadarChart(); }.bind(this));
+      }
+    },
+
     calcVariance(scores) {
       const mean = scores.reduce((a,b) => a+b, 0) / scores.length;
       return scores.reduce((a,b) => a + Math.pow(b-mean,2), 0) / scores.length;
     },
 
     getTopMatchAnalysis(dir, topDim) {
+      const en = this.lang === 'en';
       const tpls = [];
       if (topDim.key === 'EMPATHY' && dir.key === 'toC') {
-        tpls.push('你对用户需求的敏锐度是你的核心资产。在C端产品中，这种"能感受到用户哪里不爽"的直觉，是数据永远替代不了的。但要注意：同理心太强有时会让你过度迁就用户反馈而忽略了商业逻辑。');
+        tpls.push(en
+          ? 'Your keen sensitivity to user needs is your core asset. In consumer products, this intuitive feel for where users struggle is something data can never replace. But watch out: too much empathy can sometimes make you over-index on user feedback at the expense of business logic.'
+          : '你对用户需求的敏锐度是你的核心资产。在C端产品中，这种"能感受到用户哪里不爽"的直觉，是数据永远替代不了的。但要注意：同理心太强有时会让你过度迁就用户反馈而忽略了商业逻辑。');
       }
       if (topDim.key === 'LOGIC' && (dir.key === 'toB' || dir.key === 'toM')) {
-        tpls.push('你的系统思维和逻辑拆解能力，在这个方向中如鱼得水。你很擅长在复杂的业务流程中找到那条最清晰的路径。你最大的优势是能把"一团乱麻"梳理成端到端的清晰方案。');
+        tpls.push(en
+          ? 'Your systems thinking and logical decomposition skills thrive in this direction. You excel at finding the clearest path through complex business processes. Your greatest strength is turning a tangled mess into a clear, end-to-end solution.'
+          : '你的系统思维和逻辑拆解能力，在这个方向中如鱼得水。你很擅长在复杂的业务流程中找到那条最清晰的路径。你最大的优势是能把"一团乱麻"梳理成端到端的清晰方案。');
       }
       if (topDim.key === 'TECH' && dir.key === 'AI PM') {
-        tpls.push('在2026年依然保持对技术的敏锐学习和判断力，这本身就是一种稀缺能力。做AI产品，你不会被工程师"这个做不了"的说辞拦住，因为你大概知道能做不能做。但你的挑战可能是"技术兴奋度过高"，不是所有问题都需要AI来解决。');
+        tpls.push(en
+          ? 'Staying sharp on technology and making sound technical judgments in 2026 is a rare capability in itself. As an AI PM, you won\'t get blocked when engineers say "this can\'t be done"—because you have a rough sense of what\'s possible. Your challenge may be "excessive tech enthusiasm"—not every problem needs AI to solve it.'
+          : '在2026年依然保持对技术的敏锐学习和判断力，这本身就是一种稀缺能力。做AI产品，你不会被工程师"这个做不了"的说辞拦住，因为你大概知道能做不能做。但你的挑战可能是"技术兴奋度过高"，不是所有问题都需要AI来解决。');
       }
       if (topDim.key === 'COMM') {
-        tpls.push('你的沟通推动力是你最亮眼的能力。在产品经理这个没有行政权力但有无限责任的岗位上，能推动各方共识的人，就是项目的"隐形引擎"。重点发挥这个优势：在关键决策节点上，由你来主持对齐。');
+        tpls.push(en
+          ? 'Your communication and influence skills are your most impressive strength. In a role with no formal authority but unlimited responsibility, the person who can align stakeholders is the project\'s invisible engine. Lean into this: take the lead at key decision checkpoints to drive consensus.'
+          : '你的沟通推动力是你最亮眼的能力。在产品经理这个没有行政权力但有无限责任的岗位上，能推动各方共识的人，就是项目的"隐形引擎"。重点发挥这个优势：在关键决策节点上，由你来主持对齐。');
       }
       if (topDim.key === 'GRIT') {
-        tpls.push('你的续航力让人印象深刻。产品经理是一场马拉松，不是短跑。在2026年变化极快的环境下，能在混沌中持续前进本身就是非常珍贵的品质。建议发挥这个优势：主动承担需要"长期耐力"的项目。');
+        tpls.push(en
+          ? 'Your endurance is impressive. Product management is a marathon, not a sprint. In the fast-changing environment of 2026, the ability to keep moving through chaos is an invaluable quality. Lean into this: volunteer for projects that require sustained, long-term stamina.'
+          : '你的续航力让人印象深刻。产品经理是一场马拉松，不是短跑。在2026年变化极快的环境下，能在混沌中持续前进本身就是非常珍贵的品质。建议发挥这个优势：主动承担需要"长期耐力"的项目。');
       }
       if (topDim.key === 'JUDGE') {
-        tpls.push('你展现出很强的判断取舍能力，这在"做什么不做什么"的决策中至关重要。你的优势在于能看到问题的本质而不是被表面需求牵着走。进入这个方向后，建议前3个月重点建立你对业务领域知识的地图，让你的判断力有更扎实的底座。');
+        tpls.push(en
+          ? 'You demonstrate strong judgment and prioritization ability, which is crucial in "what to build vs. what not to build" decisions. Your strength lies in seeing the essence of problems rather than being led by surface-level requests. In this direction, spend your first 3 months building a deep map of the business domain, so your judgment has an even stronger foundation.'
+          : '你展现出很强的判断取舍能力，这在"做什么不做什么"的决策中至关重要。你的优势在于能看到问题的本质而不是被表面需求牵着走。进入这个方向后，建议前3个月重点建立你对业务领域知识的地图，让你的判断力有更扎实的底座。');
       }
       if (topDim.key === 'TASTE') {
-        tpls.push('你的产品审美力是你的差异化竞争力。在AI能生成无数方案的时代，"选哪个"的能力比"做出来"的能力更稀缺。你的直觉能让你在众多方案中挑出真正好用的那个。建议多积累"好设计"的案例库，让你的审美从直觉升级为系统。');
+        tpls.push(en
+          ? 'Your product taste is your differentiating competitive edge. In an era where AI can generate countless solutions, the ability to pick the right one is rarer than the ability to build one. Your intuition lets you spot the truly usable option among many. Build a case library of great design to systematically upgrade your taste from instinct to expertise.'
+          : '你的产品审美力是你的差异化竞争力。在AI能生成无数方案的时代，"选哪个"的能力比"做出来"的能力更稀缺。你的直觉能让你在众多方案中挑出真正好用的那个。建议多积累"好设计"的案例库，让你的审美从直觉升级为系统。');
       }
 
       if (tpls.length === 0) {
-        tpls.push('你的能力画像与' + dir.label + '方向有很高的匹配度。进入这个方向后，你最大的优势在于你的能力组合与该方向的核心要求高度契合。建议在前3个月重点建立对行业和用户的深入理解，让你的能力在具体场景中落地。');
+        tpls.push(en
+          ? 'Your ability profile has a high match with the ' + dir.label + ' direction. Your greatest advantage is that your capability mix aligns closely with this direction\'s core demands. Recommend spending your first 3 months building deep industry and user understanding, so your abilities can land in concrete scenarios.'
+          : '你的能力画像与' + dir.label + '方向有很高的匹配度。进入这个方向后，你最大的优势在于你的能力组合与该方向的核心要求高度契合。建议在前3个月重点建立对行业和用户的深入理解，让你的能力在具体场景中落地。');
       }
       return tpls.join(' ');
     },
 
     getBottomMatchAnalysis(dir, bottomDim) {
+      const en = this.lang === 'en';
       const tpls = [];
       if (dir.key === 'toG') {
-        tpls.push('toG方向对你的挑战不在于"事情本身难"，而在于"做事的方式和你习惯的不一样"。toG的日常是大量的汇报文档、冗长的审批流程、以及"领导满意"比"用户满意"更重要的价值排序。如果你执意要去，最需要补的不是产品能力，而是"耐心倾听+精准表达"的沟通习惯。');
+        tpls.push(en
+          ? 'The toG direction challenges you not because the work is hard, but because the way of working differs from what you\'re used to. Day-to-day government PM work involves extensive reporting documents, lengthy approval chains, and a value hierarchy where "the leader is satisfied" often outweighs "the user is satisfied." If you\'re set on this path, what you need most isn\'t product skills—it\'s communication habits built on patient listening and precise expression.'
+          : 'toG方向对你的挑战不在于"事情本身难"，而在于"做事的方式和你习惯的不一样"。toG的日常是大量的汇报文档、冗长的审批流程、以及"领导满意"比"用户满意"更重要的价值排序。如果你执意要去，最需要补的不是产品能力，而是"耐心倾听+精准表达"的沟通习惯。');
       }
       if (bottomDim.key === 'GRIT') {
-        tpls.push('你各方面能力都不错，唯一需要关注的是"续航力"。产品经理是一场马拉松，你可能会在前3个月冲得很猛，但如果项目遇到反复，你可能比其他人更容易产生"我是不是不适合"的怀疑。给自己设置"小里程碑"，用短期正反馈来对冲长期不确定性。');
+        tpls.push(en
+          ? 'Your abilities are solid across the board—the one area to watch is endurance. Product management is a marathon. You might sprint hard in the first 3 months, but when a project hits repeated setbacks, you may be more prone to asking "am I cut out for this?" Set yourself small milestones and use short-term positive feedback to buffer against long-term uncertainty.'
+          : '你各方面能力都不错，唯一需要关注的是"续航力"。产品经理是一场马拉松，你可能会在前3个月冲得很猛，但如果项目遇到反复，你可能比其他人更容易产生"我是不是不适合"的怀疑。给自己设置"小里程碑"，用短期正反馈来对冲长期不确定性。');
       }
       if (bottomDim.key === 'TECH') {
-        tpls.push('在2026年，技术理解力的短板会比较明显地影响你在AI相关方向上的竞争力。但不一定要成为技术专家：关键是建立起对AI能力边界的基本认知框架。建议从每天花15分钟了解一个AI产品功能开始，积累"AI能做什么、不能做什么"的直觉。');
+        tpls.push(en
+          ? 'In 2026, a tech fluency gap will noticeably impact your competitiveness in AI-related directions. But you don\'t need to become an engineer—the key is building a basic mental framework of AI capability boundaries. Start with 15 minutes a day learning about one AI product feature, and accumulate intuition for what AI can and can\'t do.'
+          : '在2026年，技术理解力的短板会比较明显地影响你在AI相关方向上的竞争力。但不一定要成为技术专家：关键是建立起对AI能力边界的基本认知框架。建议从每天花15分钟了解一个AI产品功能开始，积累"AI能做什么、不能做什么"的直觉。');
       }
       if (bottomDim.key === 'EMPATHY') {
-        tpls.push('用户洞察力的短板可能让你在需要深度理解用户的方向上感到吃力。这不一定意味着你缺乏同理心，而可能是你更习惯用逻辑而非直觉去理解问题。建议刻意练习"用户观察"：每月找2-3个真实用户，不要问问题，就静静地看他们怎么用产品。');
+        tpls.push(en
+          ? 'A gap in user insight may make you struggle in directions requiring deep user understanding. This doesn\'t mean you lack empathy—it may mean you\'re more comfortable using logic than intuition to understand problems. Practice "user observation" deliberately: find 2-3 real users each month, don\'t ask questions, just quietly watch them use the product.'
+          : '用户洞察力的短板可能让你在需要深度理解用户的方向上感到吃力。这不一定意味着你缺乏同理心，而可能是你更习惯用逻辑而非直觉去理解问题。建议刻意练习"用户观察"：每月找2-3个真实用户，不要问问题，就静静地看他们怎么用产品。');
       }
       if (bottomDim.key === 'COMM') {
-        tpls.push('沟通推动力是你需要关注的维度。产品经理的工作本质是"影响力驱动"，没有行政权力但要推动各方前进。建议从小的协作习惯开始练习：每次会议前先想清楚"我想让谁、做什么、为什么"，把沟通从"信息传递"升级为"共识推动"。');
+        tpls.push(en
+          ? 'Communication and influence is a dimension to watch. Product management is fundamentally influence-driven work—no formal authority, but you have to move people forward. Start with small collaboration habits: before every meeting, clarify "who do I want to do what, and why," upgrading your communication from information transfer to consensus building.'
+          : '沟通推动力是你需要关注的维度。产品经理的工作本质是"影响力驱动"，没有行政权力但要推动各方前进。建议从小的协作习惯开始练习：每次会议前先想清楚"我想让谁、做什么、为什么"，把沟通从"信息传递"升级为"共识推动"。');
       }
       if (tpls.length === 0) {
-        tpls.push(dir.label + '方向和你当前的画像匹配度相对较低。这并不意味着你不能做，而是需要刻意在某些维度上补强。建议先深入了解这个方向的真实工作日常，确认自己是否真的愿意接受这些挑战。');
+        tpls.push(en
+          ? 'The ' + dir.label + ' direction has relatively low current alignment with your profile. This doesn\'t mean you can\'t do it—it means you need deliberate strengthening in certain dimensions. I\'d suggest first deeply understanding what the real day-to-day looks like in this direction, and confirming whether you genuinely want to take on those challenges.'
+          : dir.label + '方向和你当前的画像匹配度相对较低。这并不意味着你不能做，而是需要刻意在某些维度上补强。建议先深入了解这个方向的真实工作日常，确认自己是否真的愿意接受这些挑战。');
       }
       return tpls.join(' ');
     },
 
     getGeneralAnalysis(dims, variance) {
+      const en = this.lang === 'en';
       const tpls = [];
       if (variance < 80) {
-        tpls.push('你的能力画像非常均衡——没有明显的短板，但也没有绝对突出的长板。这意味着你是一个"即插即用"型选手，放在哪个方向都能快速上手。但也意味着你可能需要在某个维度上有意识地"刻意突出"，找到你真正热爱的方向，在那个方向的核心维度上持续深耕，让你的长板长到别人一眼就能认出来。');
+        tpls.push(en
+          ? 'Your ability profile is very balanced — no obvious weak spots, but no standout strengths either. You\'re a versatile "plug-and-play" type who can ramp up quickly in any direction. The trade-off: you may need to deliberately build a spike in one dimension. Find a direction you truly love, go deep on its core competency, and make your strength unmistakable.'
+          : '你的能力画像非常均衡——没有明显的短板，但也没有绝对突出的长板。这意味着你是一个"即插即用"型选手，放在哪个方向都能快速上手。但也意味着你可能需要在某个维度上有意识地"刻意突出"，找到你真正热爱的方向，在那个方向的核心维度上持续深耕，让你的长板长到别人一眼就能认出来。');
       } else {
         const top = dims.find(d => d.isTop);
         const sorted = [...dims].sort((a,b) => a.score - b.score);
         const bottom = sorted[0];
-        tpls.push('你的能力画像有明显的长板和短板。你的' + top.label + '是你的核心竞争力，建议在职业选择中优先寻找能最大化发挥这个能力的场景。而' + bottom.label + '虽然目前是短板，但可以通过刻意练习来提升。关键是：不要为了补齐短板而牺牲长板的发挥空间——找到需要你长板的场景，短板用合作来补。');
+        tpls.push(en
+          ? 'Your profile has clear strengths and gaps. Your ' + top.label + ' is your core competitive edge — prioritize roles that maximize it. ' + bottom.label + ' is currently a gap, but it can improve with deliberate practice. Don\'t sacrifice your strengths to fix weaknesses — find scenarios that need your spike, and cover gaps through collaboration.'
+          : '你的能力画像有明显的长板和短板。你的' + top.label + '是你的核心竞争力，建议在职业选择中优先寻找能最大化发挥这个能力的场景。而' + bottom.label + '虽然目前是短板，但可以通过刻意练习来提升。关键是：不要为了补齐短板而牺牲长板的发挥空间——找到需要你长板的场景，短板用合作来补。');
       }
       return tpls.join(' ');
     },
@@ -1916,6 +2410,7 @@ createApp({
           localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(this.questionOrder));
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.selectedAnswers));
+        localStorage.setItem(STORAGE_LANG_KEY, this.lang);
         var progress = this.questionOrder.length ? this.getFirstUnansweredIndex() : this.answeredCount;
         localStorage.setItem(STORAGE_PROGRESS_KEY, progress);
       } catch(e) {}
@@ -1923,6 +2418,8 @@ createApp({
 
     loadProgress() {
       try {
+        var lang = localStorage.getItem(STORAGE_LANG_KEY);
+        if (lang === 'zh' || lang === 'en') this.lang = lang;
         var data = localStorage.getItem(STORAGE_KEY);
         if (!data) return;
         this.selectedAnswers = this.migrateLegacyAnswers(JSON.parse(data));
@@ -1981,7 +2478,7 @@ createApp({
     generateResultImage() {
       var self = this;
       if (typeof html2canvas === 'undefined') {
-        alert('截图组件未加载，请刷新页面后重试');
+        alert(this.t('result.imageFail'));
         return;
       }
       var el = this.$refs.resultCapture;
@@ -2042,7 +2539,7 @@ createApp({
               });
             }).catch(function(err) {
               console.error(err);
-              alert('生成图片失败，请确认通过网页服务器访问（非直接打开文件）后重试');
+              alert(self.t('result.exportFail'));
             }).finally(function() {
               el.classList.remove('scores-revealed');
               self.savingImage = false;
@@ -2058,7 +2555,7 @@ createApp({
       var d = new Date();
       var stamp = d.getFullYear() + '' + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
       a.href = this.previewImageUrl;
-      a.download = '产品经理能力画像_' + stamp + '.png';
+      a.download = (this.lang === 'zh' ? '产品经理能力画像_' : 'PM_Aptitude_Profile_') + stamp + '.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2110,7 +2607,7 @@ createApp({
       const ctx = canvas.getContext('2d');
       const scores = this.dimensionScores;
       const dims = ['JUDGE','LOGIC','EMPATHY','TASTE','TECH','COMM','GRIT'];
-      const labels = dims.map(d => DIMENSION_NAMES[d]);
+      const labels = dims.map(d => this.lang === 'zh' ? DIMENSION_NAMES[d] : DIMENSION_NAMES_EN[d]);
       const data = dims.map(d => scores[d] || 50);
 
       // Responsive size
@@ -2123,7 +2620,7 @@ createApp({
         data: {
           labels,
           datasets: [{
-            label: '你的能力画像',
+            label: this.lang === 'zh' ? '你的能力画像' : 'Your Ability Profile',
             data,
             backgroundColor: 'rgba(99, 102, 241, 0.22)',
             borderColor: '#4F46E5',
@@ -2168,7 +2665,7 @@ createApp({
               backgroundColor: '#111827',
               titleFont: { size: 13 },
               bodyFont: { size: 14 },
-              callbacks: { label: ctx => ' ' + ctx.raw + ' 分' }
+              callbacks: { label: ctx => ' ' + ctx.raw + (this.lang === 'zh' ? ' 分' : ' pts') }
             }
           }
         }
@@ -2186,12 +2683,16 @@ createApp({
     selectedAnswers: {
       deep: true,
       handler() { this.saveProgress(); }
+    },
+    lang() {
+      this.applyPageLang();
     }
   },
   mounted() {
     this.windowWidth = window.innerWidth;
     window.addEventListener('resize', this.handleResize);
     this.loadProgress();
+    this.applyPageLang();
     var loading = document.getElementById('page-loading');
     if (loading) loading.style.display = 'none';
     document.getElementById('app').setAttribute('data-ready', '1');
